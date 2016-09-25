@@ -1,5 +1,6 @@
  > The language files are simple Python scripts that only hold data. (No functions are used)
 
+
  > The Braille representation that is used throughout the program:
     The example Braille Cell:
     [a,b]
@@ -14,7 +15,8 @@
         Note: > endings start with a dash (e.g. '-ing')
               > intermediate letter combinations start and end with a dash (e.g. '-ea-')
 
-    - shortcuts: (type: dict) Some words in Braille have simpler representations. For example, the word `child` in English can be represented as `ch` in Braille.
+    - contractions: (type: dict) Some words in Braille have simpler representations. For example, the word `child` in English can be represented as `ch` in Braille.
+
     - specialCharacters: (type: dict) Each language has special characters. Some may be the same in every language. Therefore, this list includes all these special characters, and their Braille representation. There are some variables you may use which are discussed below.
 
 
@@ -32,12 +34,13 @@
             %shape          : The next word is a shape (circle, triangle etc...)
             %emph           : Gives emphasis to the following letter
             %accent         : Declares a diacritic to the following letter (See explanation: https://en.wikipedia.org/wiki/English_Braille#Alphabet)
+            %letter         : Force end a series of numbers. (See: https://en.wikipedia.org/wiki/English_Braille#Formatting_marks)
 
         -- Other Variables:
             $dollar         : Represent a dollar sign
             $quote_open     : Represent an opening quote (“)
             $quote_close    : Represent a closing quote (”)
-
+            $decimal        : Represents the decimal point in mathematic notation
 
  > Misc Notes:
     1) The only built-in data is numbers.

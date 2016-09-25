@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # English representation for Braille
 
 do_not_import = False       # Change this if you don't want it imported in the Braille translator
@@ -50,6 +52,7 @@ alphabet = { 'a': '100000',
              'with' : '011111',
 
              '-ing' : '010011',
+             '-self': '111000',
              '-ea-' : '001000',
              '-bb-' : '001010',
              '-cc-' : '001100',
@@ -57,8 +60,40 @@ alphabet = { 'a': '100000',
              '-gg-' : '001111'
 }
 
-shortcuts = {
-    'child' : 'ch'
+contractions = {
+    'but' : 'b',
+    'can' : 'c',
+    'do' : 'd',
+    'every' : 'e',
+    'from' : 'f',
+    'go' : 'g',
+    'have' : 'h',
+    'just' : 'j',
+    'knowledge' : 'k',
+    'more' : 'm',
+    'not' : 'n',
+    'people' : 'p',
+    'quite' : 'q',
+    'rather' : 'r',
+    'so' : 's',
+    'that' : 't',
+    'still' : 'st',
+    'child' : 'ch',
+    'us' : 'u',
+    'very' : 'v',
+    'it' : 'x',
+    'you' : 'y',
+    'as' : 'z',
+    'shall' : 'sh',
+    'this' : 'th',
+    'which' : 'wh',
+    'out' : 'ou',
+    'will' : 'w',
+    'be' : 'bb',
+    'en' : 'enough',
+    'to' : 'ff',
+    'were' : 'gg',
+    'was' : '”'
 }
 
 specialCharacters = {
@@ -70,6 +105,8 @@ specialCharacters = {
     
     '$quote_open' : '001011',
     '$quote_close' : '000111',
+    '$single_quote_open' : '000001001011',
+    '$single_quote_close': '000111000010',
     '$dollar' : '010000011010',
 
     ',' : '001000',
@@ -79,6 +116,8 @@ specialCharacters = {
     '!' : '001110',
     '(' : '000100101001',
     ')' : '000100010110',
+    '[' : '000001001111',
+    ']' : '001111000010',
     '?' : '001011',
     '/' : '010101010010',
     '\'' : '000010',

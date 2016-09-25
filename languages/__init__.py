@@ -1,7 +1,7 @@
 import os
 import __builtin__
 
-for i in os.listdir('./languages'):
+for i in os.listdir(os.path.split(os.path.abspath(__file__))[0]):
     if i.endswith(".py") == False:
         continue
     

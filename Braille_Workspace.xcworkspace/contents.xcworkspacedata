@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:brailleTranslator.py">
+      location = "container:/Users/ant0nisktz/MEGADeveloperBackups/Braille/Braille.py">
    </FileRef>
    <FileRef
       location = "group:languages">
