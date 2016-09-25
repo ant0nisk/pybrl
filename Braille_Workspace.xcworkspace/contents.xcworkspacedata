@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "container:brailleTranslator.py">
+   </FileRef>
+   <FileRef
+      location = "group:languages">
+   </FileRef>
+   <FileRef
+      location = "group:docs">
+   </FileRef>
+   <FileRef
+      location = "group:braille-converter-master">
+   </FileRef>
+   <FileRef
+      location = "group:../../MEGADeveloperBackups/Braille/bookmarks.rtf">
+   </FileRef>
+</Workspace>

@@ -1,0 +1,45 @@
+ > The language files are simple Python scripts that only hold data. (No functions are used)
+
+ > The Braille representation that is used throughout the program:
+    The example Braille Cell:
+    [a,b]
+    [c,d]
+    [e,f]
+    can be represented as the string: `abcdef`
+(See the included language files, for example)
+
+
+ > The variables consist of the following:
+    - alphabet: (type: dict) Representation of the alphabet in the format discussed above. This includes shorthands of letter combinations such as `sh`, `th` etc...
+        Note: > endings start with a dash (e.g. '-ing')
+              > intermediate letter combinations start and end with a dash (e.g. '-ea-')
+
+    - shortcuts: (type: dict) Some words in Braille have simpler representations. For example, the word `child` in English can be represented as `ch` in Braille.
+    - specialCharacters: (type: dict) Each language has special characters. Some may be the same in every language. Therefore, this list includes all these special characters, and their Braille representation. There are some variables you may use which are discussed below.
+
+
+ > Variables in the Formatting:
+    - General Info:
+        Each variable starts with a dollar sign `$` or a percent sign `%`. That is because there are two types of variables:
+            1) The percent sign variables indicate that the variable is used as a shift-sign. For example, to make a letter capital, it needs the shift indicator '000001' before the letter. This is where the %capital command is used.
+
+            2) The dollar sign variables indicate a normal variable. For instance, the dollar sign cannot be represented as '$' because it is used already for the variables. This means that we need to use the $dollar variable to represent it.
+
+    - List of Variables:
+        -- Shifters:
+            %capital        : This indicates that the next letter needs to be a capital letter
+            %number         : The next letter is a number
+            %shape          : The next word is a shape (circle, triangle etc...)
+            %emph           : Gives emphasis to the following letter
+            %accent         : Declares a diacritic to the following letter (See explanation: https://en.wikipedia.org/wiki/English_Braille#Alphabet)
+
+        -- Other Variables:
+            $dollar         : Represent a dollar sign
+            $quote_open     : Represent an opening quote (“)
+            $quote_close    : Represent a closing quote (”)
+
+
+ > Misc Notes:
+    1) The only built-in data is numbers.
+    2) To disable a specific language file from being imported, then change the do_not_import variable to True
+    3) You can change the numbering system from Nemeth to Standard by having the use_nemeth_code to False
