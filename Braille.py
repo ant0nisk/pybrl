@@ -47,7 +47,7 @@ importedContractions = {}
 importedSpecials = {}
 supportedSymbols = {}
 _orderedSplitters = []
-_Specials = [u'“',u'”',u'$',u'"',u'',u'»',u'«']
+_Specials = [u'“',u'”',u'$',u'"',u'\'',u'»',u'«', '$dollar', '$quote_open', '$quote_close', '$shape', '$emph', '$accent', '$decimal', '$comma', '$triple_dot', '$cross_mult', '$dot_mult', '$div', '$sqrt']
 
 def importLanguageFiles(files=[]):
     """ 
@@ -63,20 +63,21 @@ def importLanguageFiles(files=[]):
         if languageModule.do_not_import == True:
             continue
         else:
-            importedAlphabets.update(languageModule.alphabet)
-            importedContractions.update(languageModule.contractions)
-            importedSpecials.update(languageModule.specialCharacters)
-
-    tmpAlphabets={}
-    for k in importedAlphabets: tmpAlphabets[k] = importedAlphabets[k]
+            importedAlphabets[i] = languageModule.alphabet
+            importedContractions[i] = languageModule.contractions
+            importedSpecials[i] = languageModule.specialCharacters
     
-    importedAlphabets = tmpAlphabets
     upperAlphabets={}
-    for k in tmpAlphabets.keys(): upperAlphabets[k.upper()] = tmpAlphabets[k]
+    for l in importedAlphabets.keys():
+        if l == 'os': continue
 
-    importedAlphabets.update(upperAlphabets)
+        upperAlphabets[l] = {}
+        for k in importedAlphabets[l].keys():
+            upperAlphabets[l][k.upper()] = importedAlphabets[l][k]
 
-    _orderedSplitters = importedAlphabets.keys()
+        importedAlphabets[l].update(upperAlphabets[l])
+
+    _orderedSplitters = [i for j in importedAlphabets.keys() for i in importedAlphabets[j].keys()]
     _orderedSplitters = sorted(_orderedSplitters, key=lambda x: len(x.replace("-","")), reverse=True)
 
 def _customIndex(l, element, N=0):
@@ -89,7 +90,51 @@ def _customIndex(l, element, N=0):
     
     return len(l)-len(parts[-1])-len(element)
 
-def translate(text):
+def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
+    """
+    Detect which of the imported Alphabets to use
+    """
+    if len(importedAlphabets) == 0:
+        importLanguageFiles()
+
+
+    if mainLanguage == None:
+        mainLanguage = importedAlphabets.keys()[0]
+
+    if not wrd:
+        return mainLanguage
+    
+    bestHitRate = -1
+    targetAlphabet = mainLanguage
+    mathHits = 0
+    mainLanguageHits = 0
+
+    for a in importedAlphabets.keys():
+        hits = 0
+        mathHits = 0
+        for c in wrd:
+            if c.isdigit():
+                mathHits += 1
+        
+            if c in importedAlphabets[a].keys():
+                hits += 1
+                if a == mainLanguage:
+                    mainLanguageHits += 1
+
+        if hits > bestHitRate:
+            bestHitRate = hits
+            targetAlphabet = a
+#
+#    if mathHits >= bestHitRate and not avoidMath:
+#        targetAlphabet = 'mathematics'
+#    elif avoidMath:
+#         if mathHits > bestHitRate * 1.5: targetAlphabet = 'mathematics'
+    if mainLanguageHits == bestHitRate:
+        targetAlphabet = mainLanguage
+
+    return targetAlphabet
+
+def translate(text, mainLanguage = None):
     """
     Translate a text into Braille representation.
     
@@ -101,18 +146,43 @@ def translate(text):
     if type(text) != list:
         text = preprocess(text)
 
-    output = []
 
+    if len(importedAlphabets.keys()) == 0:
+        raise Exception("No Language files are imported.")
+    
+    usedLanguage = mainLanguage
+    if mainLanguage == None:
+        usedLanguage = importedAlphabets.keys()[0]
+        if 'english' in importedAlphabets.keys():
+            usedLanguage = 'english'
+
+        mainLanguage = usedLanguage
+
+    output = []
+    singleQuoteOpened = False
+    doubleQuoteOpened = False
+
+    previousLanguage = usedLanguage
     for wrd in text:
+        usedLanguage = detectLanguage(wrd, mainLanguage = mainLanguage)
+        enableLanguageIndicator = False
+
+        if usedLanguage != mainLanguage:
+            enableLanguageIndicator = True
+            previousLanguage = usedLanguage
+
         outWrd = []
         numberSeries = False
         capitalsStreak = 0
+        foreignStreak = 0
+        foreignCapitalStreak = False
+
         cntr = 0
         for c in wrd:
             # Digits
             if c.isdigit():
                 if numberSeries == False:
-                    outWrd.append(importedSpecials['%number'])
+                    outWrd.append(importedSpecials[usedLanguage]['%number'])
                 
                 numberSeries = True
                 if use_nemeth_code:
@@ -123,48 +193,100 @@ def translate(text):
                 continue
             else:
                 if numberSeries and c not in languages.mathematics.alphabet:
-                    outWrd.append(importedSpecials['%letter'])
+                    outWrd.append(importedSpecials[usedLanguage]['%letter'])
             
                 numberSeries = False
 
             # Check for decimal point
             if c == u'.' and numberSeries:
-                outWrd.append(importedSpecials['%decimal'])
+                outWrd.append(importedSpecials[usedLanguage]['%decimal'])
                 continue
 
             # Non-digit Characters
             if c == u'$':
-                outWrd.append(importedSpecials['$dollar'])
+                if '$dollar' in importedSpecials[usedLanguage].keys():
+                    outWrd.append(importedSpecials[usedLanguage]['$dollar'])
+                
+                continue
+            elif c.startswith('$'):
+                if c in importedSpecials[usedLanguage].keys():
+                    outWrd.append(importedSpecials[usedLanguage][c])
+                
+                continue
+            elif c == '"' or c == '\'':
+                if '$single_quote_close' not in importedSpecials[usedLanguage].keys() or '$single_quote_open' not in importedSpecials[usedLanguage].keys():
+                    c = '"'
+
+                if c == '\'':
+                    if singleQuoteOpened == True:
+                        outWrd.append(importedSpecials[usedLanguage]['$single_quote_close'])
+                        singleQuoteOpened = False
+                    else:
+                        singleQuoteOpened = True
+                        outWrd.append(importedSpecials[usedLanguage]['$single_quote_open'])
+                else:
+                    if doubleQuoteOpened == True:
+                        if '$quote_close' in importedSpecials[usedLanguage].keys():
+                            doubleQuoteOpened = False
+                            outWrd.append(importedSpecials[usedLanguage]['$quote_close'])
+                    else:
+                        if '$quote_open' in importedSpecials[usedLanguage].keys():
+                            doubleQuoteOpened = True
+                            outWrd.append(importedSpecials[usedLanguage]['$quote_open'])
+
                 continue
             elif c == u'“' or c == u'«' or c == u'"':
-                outWrd.append(importedSpecials['$quote_open'])
+                outWrd.append(importedSpecials[usedLanguage]['$quote_open'])
                 continue
             elif c == u'”' or c == u'»':
-                outWrd.append(importedSpecials['$quote_close'])
+                outWrd.append(importedSpecials[usedLanguage]['$quote_close'])
                 continue
-            elif c in importedSpecials.keys():
-                outWrd.append(importedSpecials[c])
+            elif c in importedSpecials[usedLanguage].keys():
+                outWrd.append(importedSpecials[usedLanguage][c])
                 continue
             
             if not c: # Skip empty characters
                 continue
             
-            if len(c) > 1: # Is a Prefix, Infix or Suffix
-                if cntr == 0:
-                    outWrd.append(importedAlphabets[c + "-"]) # Prefix
-                elif cntr == len(wrd)-1:
-                    outWrd.append(importedAlphabets["-" + c]) # Suffix
-                else:
-                    outWrd.append(importedAlphabets["-" + c + "-"]) # Infix
+            if enableLanguageIndicator:
+                if foreignStreak == 0:
+                    foreignStreak = 1
+                    if "%foreign_indicator" in importedSpecials[usedLanguage].keys():
+                        outWrd.append(importedSpecials[mainLanguage]['%foreign_indicator'])
+        
+            if len(c) > 1:
+                if c in importedAlphabets[usedLanguage].keys():
+                    outWrd.append(importedAlphabets[usedLanguage][c])
+                else: # Is a Prefix, Infix or Suffix
+                    if cntr == 0:
+                        outWrd.append(importedAlphabets[usedLanguage][c + "-"]) # Prefix
+                    elif cntr == len(wrd)-1:
+                        outWrd.append(importedAlphabets[usedLanguage]["-" + c]) # Suffix
+                    else:
+                        outWrd.append(importedAlphabets[usedLanguage]["-" + c + "-"]) # Infix
             else:
-                outWrd.append(importedAlphabets[c])
+                outWrd.append(importedAlphabets[usedLanguage][c])
 
             cntr += 1
 
             # Capital Letters
             if c.isupper() and c in importedAlphabets and c not in languages.mathematics.alphabet:
+                prfix = ''
+                if enableLanguageIndicator:
+                    foreignCapitalStreak = True
+                
+                if foreignCapitalStreak and enableLanguageIndicator == False: # Foreign Capital streak ended. Start a new without foreign Characters
+                    if capitalsStreak == 2:
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[mainLanguage]['%foreign_capital'])
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[mainLanguage]['%foreign_capital'])
+
+                    capitalsStreak = 0
+                
                 if capitalsStreak < 2: # If there are two (or more) consecutive capital letters
-                    outWrd.insert(len(outWrd) - 1 - capitalsStreak, importedSpecials['%capital'])
+                    if enableLanguageIndicator:
+                        outWrd.insert(len(outWrd) - 1 - capitalsStreak, importedSpecials[usedLanguage]['%foreign_capital'])
+                    else:
+                        outWrd.insert(len(outWrd) - 1 - capitalsStreak, importedSpecials[usedLanguage]['%capital'])
                 
                 if capitalsStreak == 0:
                     capitalsStreak = 1
@@ -172,8 +294,12 @@ def translate(text):
                     capitalsStreak = 2
             else:
                 if capitalsStreak == 2: # End the Capital letter series
-                    outWrd.insert(len(outWrd) - 1, importedSpecials['%capital'])
-                    outWrd.insert(len(outWrd) - 1, importedSpecials['%capital'])
+                    if enableLanguageIndicator:
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[usedLanguage]['%foreign_capital'])
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[usedLanguage]['%foreign_capital'])
+                    else:
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[usedLanguage]['%capital'])
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[usedLanguage]['%capital'])
                 
                 capitalsStreak = 0
                 
@@ -199,16 +325,22 @@ def preprocess(text):
 
     words = unicode(text, 'utf-8').split(" ")
     output = []
-    
+    variableInsert = {}
     nw = []
-    for w in words:
+    for i in xrange(len(words)):
+        w = words[i]
         if w in importedContractions.keys():
             nw.append(importedContractions[w])
+        elif w in _Specials:
+            if w not in variableInsert.keys():
+                variableInsert[w] = []
+            
+            variableInsert[w].append(i)
         else:
             nw.append(w)
 
     words = nw
-    
+
     if len(_orderedSplitters) == 0:
         importLanguageFiles()
 
@@ -225,11 +357,13 @@ def preprocess(text):
             if char.isdigit():
                 wList.append(char)
             elif char in importedSpecials.keys() + _Specials:
-                specialsInsert[char] = i
+                if char not in specialsInsert.keys():
+                    specialsInsert[char] = []
+                
+                specialsInsert[char].append(i)
                 continue
             
             nword += char
-
 
         wrd = nword
 
@@ -297,9 +431,14 @@ def preprocess(text):
 
         outputWord = [orderedSplitWord[i] for i in sorted(orderedSplitWord.keys(), key=lambda x: float(x))]
         for s in specialsInsert.keys():
-            outputWord.insert(specialsInsert[s], s)
+            for i in specialsInsert[s]:
+                outputWord.insert(i, s)
 
         if outputWord != []:
             output.append(outputWord)
+
+    for v in variableInsert.keys():
+        for i in variableInsert[v]:
+            output.insert(i, [v])
 
     return output

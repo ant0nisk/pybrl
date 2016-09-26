@@ -25,17 +25,16 @@
  > Variables in the Formatting:
     - General Info:
         Each variable starts with a dollar sign `$` or a percent sign `%`. That is because there are two types of variables:
-            1) The percent sign variables indicate that the variable is used as a shift-sign. For example, to make a letter capital, it needs the shift indicator '000001' before the letter. This is where the %capital command is used.
+            1) The percent sign variables indicate that the variable is used as a shift-sign. For example, to make a letter capital, it needs the shift indicator '000001' before the letter. This is where the %capital command is used. These are automatically determined by the system.
 
-            2) The dollar sign variables indicate a normal variable. For instance, the dollar sign cannot be represented as '$' because it is used already for the variables. This means that we need to use the $dollar variable to represent it.
+            2) The dollar sign variables indicate a normal variable. For instance, the dollar sign cannot be represented as '$' because it is used already for the variables. This means that we need to use the $dollar variable to represent it. If they are used within the input text, they will be replaced accordingly. (The $dollar, $quote_open and $quote_close are automatically detected.)
+
+        IMPORTANT: Please implement the indicators in the language file. Otherwise, the correct behaviour of the translator is not guaranteed.
 
     - List of Variables:
-        -- Shifters:
+        -- Indicators:
           %capital        : This indicates that the next letter needs to be a capital letter
           %number         : The next letter is a number
-          %shape          : The next word is a shape (circle, triangle etc...)
-          %emph           : Gives emphasis to the following letter
-          %accent         : Declares a diacritic to the following letter (See explanation: https://en.wikipedia.org/wiki/English_Braille#Alphabet)
           %letter         : Force end a series of numbers. (See: https://en.wikipedia.org/wiki/English_Braille#Formatting_marks)
           %foreign_indicator  : The next letter is in different language (e.g. used for non-Latin characters) - Usually it is the Double Passage indicator
           %foreign_capital    : Some languages have different capital indicators for foreign languages.
@@ -44,6 +43,11 @@
           $dollar         : Represent a dollar sign
           $quote_open     : Represent an opening quote (“)
           $quote_close    : Represent a closing quote (”)
+          $single_quote_open     : Represent a single opening quote (')
+          $single_quote_close    : Represent a single closing quote (')
+          $shape          : The next word is a shape (circle, triangle etc...)
+          $emph           : Gives emphasis to the following letter
+          $accent         : Declares a diacritic to the following letter (See explanation: https://en.wikipedia.org/wiki/English_Braille#Alphabet)
 
                 (For Mathematics:)
           $decimal        : Represents the decimal point in mathematic notation

@@ -106,16 +106,21 @@ contractions = {
 
 specialCharacters = {
     '!': '011010',
+    '%capital': '000001',
+    '%number': '001111',
+    '%letter': '000011',
+    '%foreign_indicator': '000010',
+    '%foreign_capital': '000001',
+    
+    '$emph': '000101',
+    '$shape': '110101',
+    '$accent': '000100',
     '$dollar': '000100011100',
     '$quote_close': '001011',
     '$quote_open': '011001',
     '$single_quote_close': '001011001000',
     '$single_quote_open': '000001011001',
-    '%accent': '000100',
-    '%capital': '000001',
-    '%emph': '000101',
-    '%number': '001111',
-    '%shape': '110101',
+
     '\'': '001000',
     '(': '000010110001',
     ')': '000010001110',

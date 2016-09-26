@@ -35,6 +35,7 @@ contractions = {}
 specialCharacters = {}
 
 MspecialCharacters = {
+    '%letter': '000011',
     '$comma': '000001',
     '$cross_mult': '000100100001',
     '$decimal': '000101',
@@ -43,8 +44,7 @@ MspecialCharacters = {
     '$radicalIndex': '110001',
     '$sqrt': '001110',
     '$sqrt_end': '110111',
-    '$tripple_dot': '001000001000001000',
-    '%letter': '000011'
+    '$tripple_dot': '001000001000001000'
  }
 
 def constructLaTeX(math_expr, evaluate = False): # Needs work...

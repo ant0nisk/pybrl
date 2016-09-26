@@ -1,5 +1,3 @@
-1) Find a way to have emphasis, accent and shape shifters in the text. The corresponding variables aren't yet used. Add them to the _specials as well...
+1) In mathematics, convert to LaTeX first and then to Braille (possibly easier)
 
-2) In mathematics, convert to LaTeX first and then to Braille (possibly easier)
-
-3) Detect which language module to use
+2) Better detection of mathematics in detectLanguage

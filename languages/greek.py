@@ -67,8 +67,18 @@ specialCharacters = {
     '%number': '001111',
     '%foreign_indicator': '000011',
     '%foreign_capital': '000001',
+    '%letter': '000011',
+
     '$quote_open': '011001',
     '$quote_close': '001011',
+    '$dollar': '000100011100',
+    '$emph' : '000111',
+    '$single_quote_close': '011001',
+    '$single_quote_open': '001011',
+    '$shape': '110101',
+    '$accent': '000100',
+
+
     '(': '011011',
     ')': '011011',
     '*': '100001',
