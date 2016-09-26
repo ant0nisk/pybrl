@@ -65,6 +65,8 @@ contractions = {}
 specialCharacters = {
     '%capital': '000101',
     '%number': '001111',
+    '%foreign_indicator': '000011',
+    '%foreign_capital': '000001',
     '$quote_open': '011001',
     '$quote_close': '001011',
     '(': '011011',
@@ -78,5 +80,7 @@ specialCharacters = {
     ':': '011000',
     ';': '010001',
     '\'': '001000',
-    '=': '101101'
+    '=': '101101',
+    '@': '000100100000011110',
+    '€': '000100100010'
 }

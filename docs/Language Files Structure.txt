@@ -31,26 +31,28 @@
 
     - List of Variables:
         -- Shifters:
-            %capital        : This indicates that the next letter needs to be a capital letter
-            %number         : The next letter is a number
-            %shape          : The next word is a shape (circle, triangle etc...)
-            %emph           : Gives emphasis to the following letter
-            %accent         : Declares a diacritic to the following letter (See explanation: https://en.wikipedia.org/wiki/English_Braille#Alphabet)
-            %letter         : Force end a series of numbers. (See: https://en.wikipedia.org/wiki/English_Braille#Formatting_marks)
+          %capital        : This indicates that the next letter needs to be a capital letter
+          %number         : The next letter is a number
+          %shape          : The next word is a shape (circle, triangle etc...)
+          %emph           : Gives emphasis to the following letter
+          %accent         : Declares a diacritic to the following letter (See explanation: https://en.wikipedia.org/wiki/English_Braille#Alphabet)
+          %letter         : Force end a series of numbers. (See: https://en.wikipedia.org/wiki/English_Braille#Formatting_marks)
+          %foreign_indicator  : The next letter is in different language (e.g. used for non-Latin characters) - Usually it is the Double Passage indicator
+          %foreign_capital    : Some languages have different capital indicators for foreign languages.
 
         -- Other Variables:
-            $dollar         : Represent a dollar sign
-            $quote_open     : Represent an opening quote (“)
-            $quote_close    : Represent a closing quote (”)
+          $dollar         : Represent a dollar sign
+          $quote_open     : Represent an opening quote (“)
+          $quote_close    : Represent a closing quote (”)
 
-                    (For Math:)
-            $decimal        : Represents the decimal point in mathematic notation
-            $comma          : Represents the comma separator in mathematic notation
-            $triple_dot     : Represents ...
-            $cross_mult     : Represents the × (cross-product multiplication sign)
-            $dot_mult       : Represents the · (dot-product multiplication sign)
-            $div            : Represents ÷
-            $sqrt           : Represents the square root sign
+                (For Mathematics:)
+          $decimal        : Represents the decimal point in mathematic notation
+          $comma          : Represents the comma separator in mathematic notation
+          $triple_dot     : Represents ...
+          $cross_mult     : Represents the × (cross-product multiplication sign)
+          $dot_mult       : Represents the · (dot-product multiplication sign)
+          $div            : Represents ÷
+          $sqrt           : Represents the square root sign
 
  > Misc Notes:
     1) The only built-in data is numbers.

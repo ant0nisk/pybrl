@@ -49,12 +49,13 @@ supportedSymbols = {}
 _orderedSplitters = []
 _Specials = [u'“',u'”',u'$',u'"',u'',u'»',u'«']
 
-def importRules(rules=[]):
+def importLanguageFiles(files=[]):
     """ 
-    Import the specified rules. If no rules are specified, all them will be imported (Skipping only those with the do_not_import variable set to True)
+    Import the specified language files. If no language files are specified, all them will be imported (Skipping only those with the do_not_import variable set to True)
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters
-    for i in dir(languages):
+    
+    for i in [k for k in dir(languages) if (k in files or k + '.py' in files or files == [])]:
         if (i.startswith("__") and i.endswith("__")) or i == 'os':
             continue
         
@@ -85,6 +86,7 @@ def _customIndex(l, element, N=0):
     parts = l.split(element, N+1)
     if len(parts) <= N+1:
         return -1
+    
     return len(l)-len(parts[-1])-len(element)
 
 def translate(text):
@@ -94,6 +96,8 @@ def translate(text):
     - Replaces all the variables
     - Uses the available rules to keep the context straight
     """
+    global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters, importedSymbols
+
     if type(text) != list:
         text = preprocess(text)
 
@@ -192,6 +196,7 @@ def preprocess(text):
     - Split the given text into chunks that can be represented in Braille.
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters, importedSymbols
+
     words = unicode(text, 'utf-8').split(" ")
     output = []
     
@@ -205,7 +210,7 @@ def preprocess(text):
     words = nw
     
     if len(_orderedSplitters) == 0:
-        importRules()
+        importLanguageFiles()
 
     for wrd in words:
         w = wrd

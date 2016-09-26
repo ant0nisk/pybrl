@@ -1,7 +1,5 @@
-1) Find a way to have emphasis, accent and shape shifters in the text. The corresponding variables aren't yet used
+1) Find a way to have emphasis, accent and shape shifters in the text. The corresponding variables aren't yet used. Add them to the _specials as well...
 
 2) In mathematics, convert to LaTeX first and then to Braille (possibly easier)
 
-3) Add support if all the shifters are doubled to lock.
-
-4) Detect which language module to use
+3) Detect which language module to use
