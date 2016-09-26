@@ -66,7 +66,10 @@ def importRules(rules=[]):
             importedContractions.update(languageModule.contractions)
             importedSpecials.update(languageModule.specialCharacters)
 
-    tmpAlphabets=importedAlphabets
+    tmpAlphabets={}
+    for k in importedAlphabets: tmpAlphabets[unicode(k, 'utf-8')] = unicode(importedAlphabets[k], 'utf-8')
+    
+    importedAlphabets = tmpAlphabets
     upperAlphabets={}
     for k in tmpAlphabets.keys(): upperAlphabets[k.upper()] = tmpAlphabets[k]
 
@@ -121,21 +124,20 @@ def translate(text):
                 numberSeries = False
 
             # Check for decimal point
-            if c == '.' and numberSeries:
+            if c == u'.' and numberSeries:
                 outWrd.append(importedSpecials['%decimal'])
                 continue
 
             # Non-digit Characters
-            if c == '$':
+            if c == u'$':
                 outWrd.append(importedSpecials['$dollar'])
                 continue
-            elif c == '“':
+            elif c == u'“' or c == u'«' or c == u'"':
                 outWrd.append(importedSpecials['$quote_open'])
                 continue
-            elif c == '”':
+            elif c == u'”' or c == u'»':
                 outWrd.append(importedSpecials['$quote_close'])
                 continue
-
             outWrd.append(importedAlphabets[c])
 
             # Capital Letters
@@ -173,7 +175,7 @@ def preprocess(text):
     - Split the given text into chunks that can be represented in Braille.
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters, importedSymbols
-    words = text.decode("utf-8").split(" ")
+    words = unicode(text, 'utf-8').split(" ")
     output = []
     
     nw = []

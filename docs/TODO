@@ -1,2 +1,16 @@
 1) Find a way to have emphasis, accent and shape shifters in the text. The corresponding variables aren't yet used
+
 2) Add support for prefixes
+
+3) In mathematics, convert to LaTeX first and then to Braille (possibly easier)
+
+4) Add support if all the shifters are doubled to lock.
+
+5) Detect which language module to use
+
+6) Fix this bug
+In [79]: Braille.translate("One ”")
+Out[79]: [['010001', u'100110', u'110110', u'100100'], ['000111']]
+
+In [80]: Braille.translate("One”")
+Out[80]: [['010001', u'100110', u'110110', u'100100']]

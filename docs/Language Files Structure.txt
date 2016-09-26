@@ -12,8 +12,10 @@
 
  > The variables consist of the following:
     - alphabet: (type: dict) Representation of the alphabet in the format discussed above. This includes shorthands of letter combinations such as `sh`, `th` etc...
-        Note: > endings start with a dash (e.g. '-ing')
-              > intermediate letter combinations start and end with a dash (e.g. '-ea-')
+        Note: > prefixes end with a dash (e.g. 'be-')
+              > suffixes start with a dash (e.g. '-ing')
+              > infixes letter combinations start and end with a dash (e.g. '-ea-')
+              > if there are also intonated letters (like ά in Greek), include them as well
 
     - contractions: (type: dict) Some words in Braille have simpler representations. For example, the word `child` in English can be represented as `ch` in Braille.
 
@@ -41,6 +43,12 @@
             $quote_open     : Represent an opening quote (“)
             $quote_close    : Represent a closing quote (”)
             $decimal        : Represents the decimal point in mathematic notation
+            $comma          : Represents the comma separator in mathematic notation
+            $triple_dot     : Represents ...
+            $cross_mult     : Represents the × (cross-product multiplication sign)
+            $dot_mult       : Represents the · (dot-product multiplication sign)
+            $div            : Represents ÷
+            $sqrt           : Represents the square root sign
 
  > Misc Notes:
     1) The only built-in data is numbers.
