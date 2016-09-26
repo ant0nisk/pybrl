@@ -15,31 +15,30 @@ import languages
 
 use_nemeth_code = True
 
-numbers = { # Numbers Order: 0-9
-'nemethSystem' : [
-        '000111',
-        '001000',
-        '001010',
-        '001100',
-        '001101',
-        '001001',
-        '001110',
-        '001111',
-        '001011',
-        '000110'
-],
-'stdSystem' :[
-        '011100',
-        '100000',
-        '101000',
-        '110000',
-        '110100',
-        '100100',
-        '111000',
-        '111100',
-        '101100',
-        '011000'
-    ]}
+numbers = { # Order is from 0 to 9
+'nemethSystem':
+     ['001011',
+      '010000',
+      '011000',
+      '010010',
+      '010011',
+      '010001',
+      '011010',
+      '011011',
+      '011001',
+      '001010'],
+'stdSystem':
+     ['010110',
+      '100000',
+      '110000',
+      '100100',
+      '100110',
+      '100010',
+      '110100',
+      '110110',
+      '110010',
+      '010100']
+}
 
 __builtin__.unicode_literals = unicode_literals
 
@@ -48,6 +47,7 @@ importedContractions = {}
 importedSpecials = {}
 supportedSymbols = {}
 _orderedSplitters = []
+_Specials = [u'“',u'”',u'$',u'"',u'',u'»',u'«']
 
 def importRules(rules=[]):
     """ 
@@ -67,7 +67,7 @@ def importRules(rules=[]):
             importedSpecials.update(languageModule.specialCharacters)
 
     tmpAlphabets={}
-    for k in importedAlphabets: tmpAlphabets[unicode(k, 'utf-8')] = unicode(importedAlphabets[k], 'utf-8')
+    for k in importedAlphabets: tmpAlphabets[k] = importedAlphabets[k]
     
     importedAlphabets = tmpAlphabets
     upperAlphabets={}
@@ -103,7 +103,7 @@ def translate(text):
         outWrd = []
         numberSeries = False
         capitalsStreak = 0
-        
+        cntr = 0
         for c in wrd:
             # Digits
             if c.isdigit():
@@ -119,7 +119,7 @@ def translate(text):
                 continue
             else:
                 if numberSeries and c not in languages.mathematics.alphabet:
-                    outWrd.append(importedSpecials['%letter'])      # dbg: check if this is correct
+                    outWrd.append(importedSpecials['%letter'])
             
                 numberSeries = False
 
@@ -138,7 +138,24 @@ def translate(text):
             elif c == u'”' or c == u'»':
                 outWrd.append(importedSpecials['$quote_close'])
                 continue
-            outWrd.append(importedAlphabets[c])
+            elif c in importedSpecials.keys():
+                outWrd.append(importedSpecials[c])
+                continue
+            
+            if not c: # Skip empty characters
+                continue
+            
+            if len(c) > 1: # Is a Prefix, Infix or Suffix
+                if cntr == 0:
+                    outWrd.append(importedAlphabets[c + "-"]) # Prefix
+                elif cntr == len(wrd)-1:
+                    outWrd.append(importedAlphabets["-" + c]) # Suffix
+                else:
+                    outWrd.append(importedAlphabets["-" + c + "-"]) # Infix
+            else:
+                outWrd.append(importedAlphabets[c])
+
+            cntr += 1
 
             # Capital Letters
             if c.isupper() and c in importedAlphabets and c not in languages.mathematics.alphabet:
@@ -194,11 +211,23 @@ def preprocess(text):
         w = wrd
         wList = []
         hasEnded = False
+        hasStarted = False
         foundCmbs = []
-        for char in wrd:
+        specialsInsert = {}
+        nword = ''
+        for i in xrange(len(wrd)):
+            char = wrd[i]
             if char.isdigit():
                 wList.append(char)
+            elif char in importedSpecials.keys() + _Specials:
+                specialsInsert[char] = i
+                continue
             
+            nword += char
+
+
+        wrd = nword
+
         for splitter in _orderedSplitters:
             isInfix = False
             isSuffix = False
@@ -209,9 +238,18 @@ def preprocess(text):
                     isInfix = True
                 else:
                     isSuffix = True
+            elif splitter.endswith("-"):
+                isPrefix = True
 
-            if isInfix:
-                if splitter[1:-1] in w and (w.endswith(splitter[1:-1]) == False or hasEnded):
+            if isPrefix:
+                if wrd.startswith(splitter[:-1]) and w.startswith(splitter[:-1]) and hasStarted == False:
+                    foundCmbs.append(splitter[:-1])
+                    wList.append(splitter[:-1])
+                    w = w[len(splitter[:-1]):]
+                    hasStarted = True
+
+            elif isInfix:
+                if splitter[1:-1] in w and (not (w.startswith(splitter[1:-1]) and hasStarted)) and (w.endswith(splitter[1:-1]) == False or hasEnded):
                     tmpW = w.split(splitter[1:-1])
                     for k in xrange(len(tmpW) - 1):
                         wList.append(splitter[1:-1])
@@ -233,9 +271,11 @@ def preprocess(text):
                     w = " ".join(tmp_W)
                     for k in xrange(len(tmp_W) - 1):
                         wList.append(splitter)
+
         if wList == []:
-            output.append([wrd])
-            continue
+            if wrd:
+                output.append([wrd])
+                continue
 
         orderedSplitWord = {}
         foundLetters = []
@@ -250,7 +290,11 @@ def preprocess(text):
 
             orderedSplitWord[kk] = cmb
 
+        outputWord = [orderedSplitWord[i] for i in sorted(orderedSplitWord.keys(), key=lambda x: float(x))]
+        for s in specialsInsert.keys():
+            outputWord.insert(specialsInsert[s], s)
 
-        output.append([orderedSplitWord[i] for i in sorted(orderedSplitWord.keys(), key=lambda x: float(x))])
+        if outputWord != []:
+            output.append(outputWord)
 
     return output

@@ -14,37 +14,38 @@ This is a special file which includes representations for Mathematics and specia
 This will be used if the use_nemeth_code is set to True, and only if Math input is detected. Otherwise, the mathematics_std.py will be used.
  """
 
-alphabet = {
-    '+' : '010011',
-    '-' : '000011',
-    '*' : '010000010111',
-    '=' : '010001100010',
-    '/' : '010010',
-    '!' : '111011',
-    '(' : '101111',
-    ')' : '011111',
-    '[' : '010000101111',
-    ']' : '010000011111',
-    '{' : '010001101111',
-    '}' : '010001011111',
+alphabet = {}
 
+MATH= {
+    '!': '111101',
+    '(': '111011',
+    ')': '011111',
+    '*': '000100001111',
+    '+': '001101',
+    '-': '001001',
+    '/': '001100',
+    '=': '000101101000',
+    '[': '000100111011',
+    ']': '000100011111',
+    '{': '000101111011',
+    '}': '000101011111'
 }
 
 contractions = {}
+specialCharacters = {}
 
-specialCharacters = {
-    '%letter' : '000101',
-    '$decimal' : '010001',
-    '$comma' : '000001',
-    '$tripple_dot' : '000010000010000010000010',
-    '$cross_mult' : '010000100001',
-    '$dot_mult' : '100001',
-    '$div' : '010001010010',
-    '$radicalIndex' : '101001',
-    '$sqrt' : '010110',
-    '$sqrt_end' : '111101',
-
-}
+MspecialCharacters = {
+    '$comma': '000001',
+    '$cross_mult': '000100100001',
+    '$decimal': '000101',
+    '$div': '000101001100',
+    '$dot_mult': '100001',
+    '$radicalIndex': '110001',
+    '$sqrt': '001110',
+    '$sqrt_end': '110111',
+    '$tripple_dot': '001000001000001000',
+    '%letter': '000011'
+ }
 
 def constructLaTeX(math_expr, evaluate = False): # Needs work...
     """

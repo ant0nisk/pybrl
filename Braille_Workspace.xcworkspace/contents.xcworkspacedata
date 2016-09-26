@@ -16,4 +16,7 @@
    <FileRef
       location = "group:../../MEGADeveloperBackups/Braille/bookmarks.rtf">
    </FileRef>
+   <FileRef
+      location = "group:questions.txt">
+   </FileRef>
 </Workspace>

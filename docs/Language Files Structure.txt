@@ -3,10 +3,10 @@
 
  > The Braille representation that is used throughout the program:
     The example Braille Cell:
-    [a,b]
-    [c,d]
-    [e,f]
-    can be represented as the string: `abcdef`
+    [a,d]
+    [b,e]
+    [c,f]
+    can be represented as the string: `abcdef` with 1 being a dot, and 0 being an empty space. Like this: '100010'
 (See the included language files, for example)
 
 
@@ -42,6 +42,8 @@
             $dollar         : Represent a dollar sign
             $quote_open     : Represent an opening quote (“)
             $quote_close    : Represent a closing quote (”)
+
+                    (For Math:)
             $decimal        : Represents the decimal point in mathematic notation
             $comma          : Represents the comma separator in mathematic notation
             $triple_dot     : Represents ...
