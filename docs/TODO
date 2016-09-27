@@ -1,3 +1,16 @@
-1) In mathematics, convert to LaTeX first and then to Braille (possibly easier)
+
+NOTES:
+1- Do the conversion of the math variables before
+2- Each time, set the indicators within the math module so that we know the language we are at.
+
+TODO:
+1) mathml2variable population
+
+2) Implement the Nemeth Code and the Universal math system
 
 2) Better detection of mathematics in detectLanguage
+
+2) Add more english and greek symbols in the language files
+
+3) setup.py
+    - Depends on: asciimathml

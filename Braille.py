@@ -12,6 +12,7 @@ import __builtin__
 import os
 import types
 import languages
+import brl_mathematics as mathematics
 
 use_nemeth_code = True
 
@@ -80,6 +81,8 @@ def importLanguageFiles(files=[]):
     _orderedSplitters = [i for j in importedAlphabets.keys() for i in importedAlphabets[j].keys()]
     _orderedSplitters = sorted(_orderedSplitters, key=lambda x: len(x.replace("-","")), reverse=True)
 
+    mathematics = use_nemeth_code
+
 def _customIndex(l, element, N=0):
     """
     Custom Index function so that you can find the Nth occurence of an element
@@ -124,7 +127,7 @@ def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
         if hits > bestHitRate:
             bestHitRate = hits
             targetAlphabet = a
-#
+#               # dbg
 #    if mathHits >= bestHitRate and not avoidMath:
 #        targetAlphabet = 'mathematics'
 #    elif avoidMath:
@@ -145,7 +148,6 @@ def translate(text, mainLanguage = None):
 
     if type(text) != list:
         text = preprocess(text)
-
 
     if len(importedAlphabets.keys()) == 0:
         raise Exception("No Language files are imported.")
@@ -192,7 +194,7 @@ def translate(text, mainLanguage = None):
 
                 continue
             else:
-                if numberSeries and c not in languages.mathematics.alphabet:
+                if numberSeries and c not in mathematics.symbols:
                     outWrd.append(importedSpecials[usedLanguage]['%letter'])
             
                 numberSeries = False
@@ -270,7 +272,7 @@ def translate(text, mainLanguage = None):
             cntr += 1
 
             # Capital Letters
-            if c.isupper() and c in importedAlphabets and c not in languages.mathematics.alphabet:
+            if c.isupper() and c in importedAlphabets and c not in mathematics.symbols:
                 prfix = ''
                 if enableLanguageIndicator:
                     foreignCapitalStreak = True
