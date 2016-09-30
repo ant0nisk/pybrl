@@ -53,9 +53,6 @@
           $decimal        : Represents the decimal point in mathematic notation
           $comma          : Represents the comma separator in mathematic notation
           $triple_dot     : Represents ...
-          $cross_mult     : Represents the × (cross-product multiplication sign)
-          $dot_mult       : Represents the · (dot-product multiplication sign)
-          $div            : Represents ÷
           $sqrt           : Represents the square root sign
 
  > Misc Notes:

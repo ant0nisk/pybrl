@@ -2,6 +2,7 @@
 NOTES:
 1- Do the conversion of the math variables before
 2- Each time, set the indicators within the math module so that we know the language we are at.
+3- Funny stuff happen to MathML conversion of this expression: 1/(2/a_b)
 
 TODO:
 1) mathml2variable population

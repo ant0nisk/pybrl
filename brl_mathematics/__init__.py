@@ -51,47 +51,25 @@ def mathToBraille(s):
     if type(s) != unicode:
         s = unicode(s, 'utf-8')
     
-    brl_output = makeDictMath(s)
+    if not s:
+        return ''
+    
+    brl_output = makeMathList(s)
 
-    return brl_output
+    return _mathToBrailleHelper(brl_output)
 
-def makeDictMath(s):
+def _mathToBrailleHelper(math_list, counters = None):
+    """
+    Recursive search through the List-formatted math to construct correct Braille Code
+    """
+    return math_list
+
+def makeMathList(s):
     """
     Create a structured Dict that can be iterated in such a way, that a structured Braille output can be generated.
     """
     m = parseMathToML(s)
-    m = xml.etree.ElementTree.tostring(m)
-    f = FileSpoof(m)
-    dict_output = []
-    skp = False
-    keyStack = []
-    
-    for e,t in xml.etree.ElementTree.iterparse(f, events=("start", "end")):
-        if t.tag in ['mstyle', 'math', 'mrow']:
-            continue
-        
-        if skp:
-            skp = False
-            continue
-        else:
-            skp = True
-
-        if e == 'start' and dict_output != [] and t.text == None:
-            keyStack.append(t.tag)
-            dict_output.append({t.tag: []})
-        elif e == 'end' and t.text == None:
-            keyStack.pop(-1)
-
-        if keyStack == []:
-            dict_output.append({t.tag: t.text})
-        else:
-            currentValue = get_key(dict_output[len(dict_output)-1], ".".join(keyStack))
-            if currentValue and currentValue != [None]:
-                set_key(dict_output[len(dict_output)-1], ".".join(keyStack), get_key(dict_output[len(dict_output)-1], ".".join(keyStack)) + [t.text])
-            else:
-                set_key(dict_output[len(dict_output)-1], ".".join(keyStack), [t.text])
-
-    return dict_output
+    return xmlToList(m)[1][0][1]
 
 def parseMathToML(s):
     """
@@ -100,42 +78,90 @@ def parseMathToML(s):
     parsedMath = asciimathml.parse(s)
     return parsedMath
 
-# [Helper functions/classes below]
-class FileSpoof: # A hacky way to create a file-like object in memory (Used in `mathToBraille`)
-    readDone = False
+# [Helper functions and classes below]
+#class FileSpoof: # A hacky way to create a file-like object in memory (Used in `mathToBraille`)
+#    readDone = False
+#    
+#    def __init__(self,my_text):
+#        self.my_text = my_text
+#    
+#    def readlines(self):
+#        return self.my_text.splitlines()
+#    
+#    def read(self, b = 999999999999):
+#        if self.readDone:
+#            return
+#        
+#        self.readDone = True
+#        return self.my_text[:b]
+
+def flattenList(S): # Convert a multi-dimensional list, into 1-dimensional
+    if S == []:
+        return S
+    if isinstance(S[0], list):
+        return flattenList(S[0]) + flattenList(S[1:])
+    return S[:1] + flattenList(S[1:])
+
+def xmlToList(element): # Convert XML to nested List
+    node = [element.tag]
+    text = getattr(element, 'text', None)
+    if text is not None:
+        node.append(text)
     
-    def __init__(self,my_text):
-        self.my_text = my_text
-    
-    def readlines(self):
-        return self.my_text.splitlines()
-    
-    def read(self, b = 999999999999):
-        if self.readDone:
-            return
-        
-        self.readDone = True
-        return self.my_text[:b]
+    child_nodes = []
+    for child in element:
+        child_nodes.append(xmlToList(child))
 
-def traverse(o, tree_types=(list, tuple)): #Create a generator to iterate recursively in a list
-    if isinstance(o, tree_types):
-        for value in o:
-            for subvalue in traverse(value, tree_types):
-                yield subvalue
-    else:
-        yield o
+    if child_nodes != []:
+        node.append(child_nodes)
 
-# Functions to get/set/delete a dictionary key-value in specific depth in the format rootDict.dict1.dict2.key
-# See more: http://stackoverflow.com/a/9320375/1106659
-def get_key(my_dict, key):
-    return reduce(dict.get, key.split("."), my_dict)
+    return node
 
-def set_key(my_dict, key, value):
-    key = key.split(".")
-    my_dict = reduce(dict.get, key[:-1], my_dict)
-    my_dict[key[-1]] = value
+#def xmlToDict(element): # Convert XML to nested Dictionaries
+#    node = dict()
+#
+#    text = getattr(element, 'text', None)
+#    if text is not None:
+#        node['text'] = text
+#
+#    node.update(element.items())
+#
+#    child_nodes = {}
+#    for child in element:
+#        child_nodes.setdefault(child, []).append(xmlToDict(child))
+#
+#    for key, value in child_nodes.items():
+#        if len(value) == 1:
+#             child_nodes[key] = value[0]
+#
+#    node.update(child_nodes.items())
+#
+#    return node
+#
+#def normaliseDict(d): # Replaces the keys of the nested dictionaries with the tag names
+#    new = {}
+#    for k, v in d.iteritems():
+#        if isinstance(v, dict):
+#            v = normaliseDict(v)
+#
+#        if type(k) not in [str, unicode]:
+#            new[k.tag] = v
+#        else:
+#            new[k] = v
+#
+#    return new
 
-def del_key(my_dict, key):
-    key = key.split(".")
-    my_dict = reduce(dict.get, key[:-1], my_dict)
-    del my_dict[key[-1]]
+## Functions to get/set/delete a dictionary key-value in specific depth in the format rootDict.dict1.dict2.key
+## See more: http://stackoverflow.com/a/9320375/1106659
+#def get_key(my_dict, key):
+#    return reduce(dict.get, key.split("."), my_dict)
+#
+#def set_key(my_dict, key, value):
+#    key = key.split(".")
+#    my_dict = reduce(dict.get, key[:-1], my_dict)
+#    my_dict[key[-1]] = value
+#
+#def del_key(my_dict, key):
+#    key = key.split(".")
+#    my_dict = reduce(dict.get, key[:-1], my_dict)
+#    del my_dict[key[-1]]
