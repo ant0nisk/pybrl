@@ -178,7 +178,14 @@ def translate(text, mainLanguage = None):
         capitalsStreak = 0
         foreignStreak = 0
         foreignCapitalStreak = False
+        isContraction = False
+        contractedTxtTitled = False
 
+        if "".join(wrd).lower() in importedContractions[usedLanguage].keys():
+            isContraction = True
+            contractedTxtTitled = wrd[0].isupper()
+            wrd = importedContractions[usedLanguage]["".join(wrd).lower()]
+        
         cntr = 0
         for c in wrd:
             # Digits
@@ -209,12 +216,14 @@ def translate(text, mainLanguage = None):
                 if '$dollar' in importedSpecials[usedLanguage].keys():
                     outWrd.append(importedSpecials[usedLanguage]['$dollar'])
                 
-                continue
+                if not isContraction:
+                    continue
             elif c.startswith('$'):
                 if c in importedSpecials[usedLanguage].keys():
                     outWrd.append(importedSpecials[usedLanguage][c])
                 
-                continue
+                if not isContraction:
+                    continue
             elif c == '"' or c == '\'':
                 if '$single_quote_close' not in importedSpecials[usedLanguage].keys() or '$single_quote_open' not in importedSpecials[usedLanguage].keys():
                     c = '"'
@@ -236,16 +245,20 @@ def translate(text, mainLanguage = None):
                             doubleQuoteOpened = True
                             outWrd.append(importedSpecials[usedLanguage]['$quote_open'])
 
-                continue
+                if not isContraction:
+                    continue
             elif c == u'“' or c == u'«' or c == u'"':
                 outWrd.append(importedSpecials[usedLanguage]['$quote_open'])
-                continue
+                if not isContraction:
+                    continue
             elif c == u'”' or c == u'»':
                 outWrd.append(importedSpecials[usedLanguage]['$quote_close'])
-                continue
+                if not isContraction:
+                    continue
             elif c in importedSpecials[usedLanguage].keys():
                 outWrd.append(importedSpecials[usedLanguage][c])
-                continue
+                if not isContraction:
+                    continue
             
             if not c: # Skip empty characters
                 continue
@@ -256,9 +269,15 @@ def translate(text, mainLanguage = None):
                     if "%foreign_indicator" in importedSpecials[usedLanguage].keys():
                         outWrd.append(importedSpecials[mainLanguage]['%foreign_indicator'])
         
-            if len(c) > 1:
-                if c in importedAlphabets[usedLanguage].keys():
-                    outWrd.append(importedAlphabets[usedLanguage][c])
+            if len(c) > 1 or isContraction:
+                if c in importedAlphabets[usedLanguage].keys() or isContraction:
+                    try:
+                        outWrd.append(importedAlphabets[usedLanguage][c])
+                    except:
+                        try:
+                            outWrd.append(importedSpecials[usedLanguage][c])
+                        except:
+                            pass # It is probably a quote like the `was` contraction in English, which becomes a quote.
                 else: # Is a Prefix, Infix or Suffix
                     if cntr == 0:
                         outWrd.append(importedAlphabets[usedLanguage][c + "-"]) # Prefix
@@ -272,8 +291,9 @@ def translate(text, mainLanguage = None):
             cntr += 1
 
             # Capital Letters
-            if c.isupper() and c in importedAlphabets and c not in mathematics.symbols:
+            if (c.isupper() and c in importedAlphabets[usedLanguage] and c not in mathematics.symbols) or contractedTxtTitled:
                 prfix = ''
+                contractedTxtTitled = False
                 if enableLanguageIndicator:
                     foreignCapitalStreak = True
                 
@@ -329,11 +349,13 @@ def preprocess(text):
     output = []
     variableInsert = {}
     nw = []
+
+    if len(_orderedSplitters) == 0:
+        importLanguageFiles()
+    
     for i in xrange(len(words)):
         w = words[i]
-        if w in importedContractions.keys():
-            nw.append(importedContractions[w])
-        elif w in _Specials:
+        if w in _Specials:
             if w not in variableInsert.keys():
                 variableInsert[w] = []
             
@@ -342,9 +364,6 @@ def preprocess(text):
             nw.append(w)
 
     words = nw
-
-    if len(_orderedSplitters) == 0:
-        importLanguageFiles()
 
     for wrd in words:
         w = wrd

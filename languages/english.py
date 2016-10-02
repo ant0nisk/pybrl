@@ -101,7 +101,8 @@ contractions = {
     'en' : 'enough',
     'to' : 'ff',
     'were' : 'gg',
-    'was' : '”'
+    'was' : '”',
+    'braille' : 'brl'
 }
 
 specialCharacters = {
