@@ -78,6 +78,38 @@ def parseMathToML(s):
     parsedMath = asciimathml.parse(s)
     return parsedMath
 
+def detectFractionComplexity(branch_list):
+    """
+    Detect if a Fraction is Simple, Complex or Hypercomplex. Return values: 0->Simple, 1->Complex, 2->Hypercomplex
+    
+    The branch_list is of the form [['mfrac', ...]]
+        (needs to start with the `mfrac` symbol)
+    """
+    complexity = 0
+    if flattenList(branch_list) == []:
+        return 0
+    
+    for m in xrange(len(branch_list)):
+        if branch_list[m] == 'mfrac' and len(branch_list) > m+1:
+            for children in branch_list[m+1]:
+                if type(children) == list:
+                    if children[0] == 'mfrac':
+                        complexity += 1
+                    elif children[0] == 'mrow':
+                        if len(children[1]) == 1 and type(children[1][0]) == list and children[1][0][0] == 'mfrac':
+                            complexity += 1
+                else:
+                    continue
+    
+        elif branch_list[m] == 'mrow' and len(branch_list) > m+1:
+            if len(branch_list[m+1]) == 1 and type(branch_list[m+1][0]) == list and branch_list[m+1][0][0] == 'mfrac':
+                complexity += 1
+
+    if complexity > 2: # Never occurs, but let's be sure
+        return 2
+
+    return complexity
+
 # [Helper functions and classes below]
 #class FileSpoof: # A hacky way to create a file-like object in memory (Used in `mathToBraille`)
 #    readDone = False
