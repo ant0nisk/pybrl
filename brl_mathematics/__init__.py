@@ -21,12 +21,22 @@ specialCharacters = {}
 use_nemeth_code = True
 mathModule = None
 
-mathml2variable = { # Translates the MathML operation (e.g. mfrac) into the special variable that is used in this module
+mathml2variable = {
+    """ 
+        This Dictionary translates the MathML operation (e.g. mfrac) into the special variable that is used in this module.
+        It has some custom indicators, too. (such as mfrac_end)
+    """
     'mfrac' : '$fraction_start',
-    'mi' : '$id_start',
-    'mo' : '$op_start',
+    'mfrac_end' : '$fraction_end',
+    'fracline' : '$fraction_line',
+    'fracline_diag' : '/',
+    'fracshift' : '$fraction_shift',
+    'bracketshift' : '$bracket_shift',
+#    'mi' : '$id_start',
+#    'mo' : '$op_start',
     'mn' : '$number_start',
-    'mtext' : '$text_start'
+    'mtext' : '$text_start',
+    'mssqrt' : '$sqrt'
 }
 
 def initialize():
@@ -58,11 +68,48 @@ def mathToBraille(s):
 
     return _mathToBrailleHelper(brl_output)
 
-def _mathToBrailleHelper(math_list, counters = None):
+def _mathToBrailleHelper(math_list): #, counters = None); # dbg needs description
+    """ 
+       
     """
-    Recursive search through the List-formatted math to construct correct Braille Code
-    """
-    return math_list
+    output_list = [] # One dimensional output ready to be directly translated to Braille
+    last_type = ''
+    for e in math_list:
+        e_type = e[0]
+        e_val = e[1]
+        
+        if e_type == 'mi':                  # Identifiers
+            output_list.append(e_val)
+        elif e_type == 'mo':                # Operators
+            output_list.append(e_val)
+        elif e_type == 'mfrac':             # Fractions
+            fractionComplexity = detectFractionComplexity(e)
+            output_list.extend(['fracshift'] * fractionComplexity)
+
+            output_list.append('mfrac')
+            #dbg check for complex and hypercomplex
+            #dbg support mixed numbers
+
+            for i in xrange(len(e_val)):
+                ch = e_val[i]
+                output_list.extend(_mathToBrailleHelper([ch]))
+                output_list.extend(['fracshift'] * fractionComplexity)
+                if i+1 != len(ch):
+                    output_list.append('fracline')
+
+            output_list.extend(['fracshift'] * fractionComplexity)
+            output_list.append('mfrac_end')
+        elif e_type == 'mn':                # Numbers
+            output_list.append(e_val)
+        elif e_type == 'mrow':              # Grouped Elements
+            output_list.append("(") # dbg add parenthesis shifters if necessary
+            output_list.extend(_mathToBrailleHelper(e_val))
+            output_list.append(")")
+
+        last_type = e_type # dbg (Add support for this...)
+        # dbg add support for: square roots, sqrts with index. Debug the fractions (I think it confuses complex with hyper complex... But that is a Nemeth thing...)
+
+    return output_list
 
 def makeMathList(s):
     """

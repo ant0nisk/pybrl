@@ -5,13 +5,17 @@ NOTES:
 3- Funny stuff happen to MathML conversion of this expression: 1/(2/a_b)
 
 TODO:
-1) mathml2variable population
+(n-5) support for mixed numbers in Nemeth
 
-2) Implement the Nemeth Code and the Universal math system
+(n-4) mathml2variable population
 
-2) Better detection of mathematics in detectLanguage
+(n-3) Implement the Nemeth Code and the Universal math system
 
-2) Add more english and greek symbols in the language files
+(n-2) Better detection of mathematics in detectLanguage
 
-3) setup.py
+(n-1) Add more english and greek symbols in the language files
+
+
+
+(n) setup.py
     - Depends on: asciimathml

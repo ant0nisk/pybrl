@@ -10,7 +10,7 @@ symbols = {
     '*': '000100001111',
     '+': '001101',
     '-': '001001',
-    '/': '001100',
+    '/': '000111001100',
     '=': '000101101000',
     '[': '000100111011',
     ']': '000100011111',
@@ -44,5 +44,15 @@ specialCharacters = {
     '$radicalIndex': '110001',
     '$sqrt': '001110',
     '$sqrt_end': '110111',
-    '$tripple_dot': '001000001000001000'
+    '$tripple_dot': '001000001000001000',
+
+
+    # dbg complete the dict below:
+    '$fraction_shift': '000001',
+    '$bracket_shift': '000100',
+    '$fraction_start': '100111',
+    '$fraction_end': '001111',
+    '$fraction_line': '001100',
+    '$number_start': '001111',
+    '$text_start': '000011',
 }
