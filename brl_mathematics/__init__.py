@@ -36,7 +36,9 @@ mathml2variable = {
 #    'mo' : '$op_start',
     'mn' : '$number_start',
     'mtext' : '$text_start',
-    'mssqrt' : '$sqrt'
+    'msqrt' : '$sqrt',
+    'msqrt_end' : '$sqrt_end',
+    'msqrt_shift' : '$sqrt_shift'
 }
 
 def initialize():
@@ -68,12 +70,12 @@ def mathToBraille(s):
 
     return _mathToBrailleHelper(brl_output)
 
-def _mathToBrailleHelper(math_list): #, counters = None); # dbg needs description
+def _mathToBrailleHelper(math_list, sqrt_shift=0):
     """ 
-       
+    Translates the Nested Lists into 1-Dimensional list ready to be translated to Braille.
     """
-    output_list = [] # One dimensional output ready to be directly translated to Braille
-    last_type = ''
+    output_list = []
+
     for e in math_list:
         e_type = e[0]
         e_val = e[1]
@@ -87,7 +89,7 @@ def _mathToBrailleHelper(math_list): #, counters = None); # dbg needs descriptio
             output_list.extend(['fracshift'] * fractionComplexity)
 
             output_list.append('mfrac')
-            #dbg support mixed numbers
+            # TODO support mixed numbers # dbg
 
             for i in xrange(len(e_val)):
                 ch = e_val[i]
@@ -100,12 +102,16 @@ def _mathToBrailleHelper(math_list): #, counters = None); # dbg needs descriptio
         elif e_type == 'mn':                # Numbers
             output_list.append(e_val)
         elif e_type == 'mrow':              # Grouped Elements
-            output_list.extend(_mathToBrailleHelper(e_val)) # Add support for nested brackets.
-
-        last_type = e_type # dbg (Add support for this...)
-        
-        # dbg add support for: square roots, sqrts with index.
-
+            ## For Enlarged Parentheses or Brackets, see nemeth.py notes.
+            output_list.extend(_mathToBrailleHelper(e_val, sqrt_shift=sqrt_shift))
+        elif e_type == 'msqrt':
+            output_list.extend(['msqrt_shift'] * sqrt_shift)
+            ## For radical index, add $radicalIndex and the number/operator before that # dbg
+            output_list.append('msqrt')
+            output_list.extend(_mathToBrailleHelper(e_val, sqrt_shift=sqrt_shift+1))
+            output_list.extend(['msqrt_shift'] * sqrt_shift)
+            output_list.append('msqrt_end')
+            
     return output_list
 
 def makeMathList(s):

@@ -32,8 +32,8 @@ symbols = {
 }
 
 # Notes/Observations:
-# For Complex fractions just add 000001 before the fraction. If it is hypercomplex, add 2 of these.
-# Also holds for parenthesis and the pipe symbol |. Add this operator to add multiple. If there is a shift operator (000100) add it after that.
+# (DONE) For Complex fractions just add 000001 before the fraction. If it is hypercomplex, add 2 of these.
+# Also holds for enlarged parenthesis and the pipe symbol |. Add this operator to add multiple. If there is a shift operator (000100) add it after that.
 #
 
 specialCharacters = {
@@ -49,10 +49,11 @@ specialCharacters = {
 
     # dbg complete the dict below:
     '$fraction_shift': '000001',
+    '$sqrt_shift': '000001',
     '$bracket_shift': '000100',
     '$fraction_start': '100111',
     '$fraction_end': '001111',
     '$fraction_line': '001100',
     '$number_start': '001111',
-    '$text_start': '000011',
+    '$text_start': '000011'
 }
