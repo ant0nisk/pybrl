@@ -87,7 +87,6 @@ def _mathToBrailleHelper(math_list): #, counters = None); # dbg needs descriptio
             output_list.extend(['fracshift'] * fractionComplexity)
 
             output_list.append('mfrac')
-            #dbg check for complex and hypercomplex
             #dbg support mixed numbers
 
             for i in xrange(len(e_val)):
@@ -97,17 +96,15 @@ def _mathToBrailleHelper(math_list): #, counters = None); # dbg needs descriptio
                 if i+1 != len(ch):
                     output_list.append('fracline')
 
-            output_list.extend(['fracshift'] * fractionComplexity)
             output_list.append('mfrac_end')
         elif e_type == 'mn':                # Numbers
             output_list.append(e_val)
         elif e_type == 'mrow':              # Grouped Elements
-            output_list.append("(") # dbg add parenthesis shifters if necessary
-            output_list.extend(_mathToBrailleHelper(e_val))
-            output_list.append(")")
+            output_list.extend(_mathToBrailleHelper(e_val)) # Add support for nested brackets.
 
         last_type = e_type # dbg (Add support for this...)
-        # dbg add support for: square roots, sqrts with index. Debug the fractions (I think it confuses complex with hyper complex... But that is a Nemeth thing...)
+        
+        # dbg add support for: square roots, sqrts with index.
 
     return output_list
 
@@ -144,7 +141,8 @@ def detectFractionComplexity(branch_list):
                         complexity += 1
                     elif children[0] == 'mrow':
                         if len(children[1]) == 1 and type(children[1][0]) == list and children[1][0][0] == 'mfrac':
-                            complexity += 1
+                            cmpl = detectFractionComplexity(children[1][0])
+                            complexity += 1 + cmpl
                 else:
                     continue
     
@@ -158,22 +156,6 @@ def detectFractionComplexity(branch_list):
     return complexity
 
 # [Helper functions and classes below]
-#class FileSpoof: # A hacky way to create a file-like object in memory (Used in `mathToBraille`)
-#    readDone = False
-#    
-#    def __init__(self,my_text):
-#        self.my_text = my_text
-#    
-#    def readlines(self):
-#        return self.my_text.splitlines()
-#    
-#    def read(self, b = 999999999999):
-#        if self.readDone:
-#            return
-#        
-#        self.readDone = True
-#        return self.my_text[:b]
-
 def flattenList(S): # Convert a multi-dimensional list, into 1-dimensional
     if S == []:
         return S
@@ -195,52 +177,3 @@ def xmlToList(element): # Convert XML to nested List
         node.append(child_nodes)
 
     return node
-
-#def xmlToDict(element): # Convert XML to nested Dictionaries
-#    node = dict()
-#
-#    text = getattr(element, 'text', None)
-#    if text is not None:
-#        node['text'] = text
-#
-#    node.update(element.items())
-#
-#    child_nodes = {}
-#    for child in element:
-#        child_nodes.setdefault(child, []).append(xmlToDict(child))
-#
-#    for key, value in child_nodes.items():
-#        if len(value) == 1:
-#             child_nodes[key] = value[0]
-#
-#    node.update(child_nodes.items())
-#
-#    return node
-#
-#def normaliseDict(d): # Replaces the keys of the nested dictionaries with the tag names
-#    new = {}
-#    for k, v in d.iteritems():
-#        if isinstance(v, dict):
-#            v = normaliseDict(v)
-#
-#        if type(k) not in [str, unicode]:
-#            new[k.tag] = v
-#        else:
-#            new[k] = v
-#
-#    return new
-
-## Functions to get/set/delete a dictionary key-value in specific depth in the format rootDict.dict1.dict2.key
-## See more: http://stackoverflow.com/a/9320375/1106659
-#def get_key(my_dict, key):
-#    return reduce(dict.get, key.split("."), my_dict)
-#
-#def set_key(my_dict, key, value):
-#    key = key.split(".")
-#    my_dict = reduce(dict.get, key[:-1], my_dict)
-#    my_dict[key[-1]] = value
-#
-#def del_key(my_dict, key):
-#    key = key.split(".")
-#    my_dict = reduce(dict.get, key[:-1], my_dict)
-#    del my_dict[key[-1]]
