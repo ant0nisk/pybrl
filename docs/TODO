@@ -5,15 +5,15 @@ NOTES:
 3- Funny stuff happen to MathML conversion of this expression: 1/(2/a_b)
 
 TODO:
-(n-5) support for mixed numbers in Nemeth
+(n-5) support for mixed numbers in Nemeth           (Find out a way... - One might be to have a number just before the fraction, but it isn't always true)
 
-(n-4) mathml2variable population
+(n-4) mathml2variable population                    (Might not be needed. Probably last thing to add.)
 
 (n-3) Implement the Nemeth Code and the Universal math system
 
-(n-2) Better detection of mathematics in detectLanguage
+(n-2) Better detection of mathematics in detectLanguage     (If Math is detected, then use the English Characters for language, and the Greek within the Nemeth code - Not from the Language File)
 
-(n-1) Add more english and greek symbols in the language files
+(n-1) Add more english and greek symbols in the language files (See Bookmarks)
 
 
 
