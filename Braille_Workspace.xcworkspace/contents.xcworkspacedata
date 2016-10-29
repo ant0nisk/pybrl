@@ -14,9 +14,6 @@
       location = "group:docs">
    </FileRef>
    <FileRef
-      location = "group:braille-converter-master">
-   </FileRef>
-   <FileRef
       location = "group:../../MEGADeveloperBackups/Braille/bookmarks.rtf">
    </FileRef>
 </Workspace>
