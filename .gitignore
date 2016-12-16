@@ -1,0 +1,4 @@
+braille-converter-master/
+*.pyc
+misc/
+*.xcworkspace
