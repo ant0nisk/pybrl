@@ -1,4 +1,6 @@
 TODO:
+(n-8) Probably a bug that doesn't capitalize letters if a foreign language is detected. (check for other indicators as well)
+
 (n-7) Implement a Page-matrix which will show the relative position of translated braille. See hypercomplex fraction on the link on (n-6)
 
 (n-6) Check whether double indicators are needed: http://www.brailleauthority.org/formats/2011manual-web/formats05.html
