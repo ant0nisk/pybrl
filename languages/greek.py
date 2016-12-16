@@ -73,6 +73,7 @@ specialCharacters = {
     '$quote_close': '001011',
     '$dollar': '000100011100',
     '$emph' : '000111',
+    '$underline' : '000111001001',
     '$single_quote_close': '011001',
     '$single_quote_open': '001011',
     '$shape': '110101',

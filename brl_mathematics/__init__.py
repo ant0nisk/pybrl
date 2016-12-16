@@ -125,6 +125,7 @@ def parseMathToML(s):
     """
     Parse a Mathematic expression from a given string and return an XML Element object.
     """
+    # TODO: This function should probably be avoided, because Ascii to MathML is usually ambiguous.
     parsedMath = asciimathml.parse(s)
     return parsedMath
 

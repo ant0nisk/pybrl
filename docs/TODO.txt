@@ -1,11 +1,7 @@
-
-NOTES:
-1- Do the conversion of the math variables before
-2- Each time, set the indicators within the math module so that we know the language we are at.
-3- Funny stuff happen to MathML conversion of this expression: 1/(2/a_b)
-
 TODO:
-(n-6) underline howto in braille? (14,14,14,14)?
+(n-7) Implement a Page-matrix which will show the relative position of translated braille. See hypercomplex fraction on the link on (n-6)
+
+(n-6) Check whether double indicators are needed: http://www.brailleauthority.org/formats/2011manual-web/formats05.html
 
 (n-5) support for mixed numbers in Nemeth           (Find out a way... - One might be to have a number just before the fraction, but it isn't always true)
 
@@ -18,6 +14,7 @@ TODO:
 (n-1) Add more english in the language files (See Bookmarks)
 
 
-
-(n) setup.py
-    - Depends on: asciimathml
+NOTES:
+1- Do the conversion of the math variables before the specialCharacter variables
+2- Each time, set the indicators within the math module so that we know the language we are at.
+3- Funny stuff happen to MathML conversion of this expression: 1/(2/a_b) (Which is why the `asciimathml` dependency will be dropped)

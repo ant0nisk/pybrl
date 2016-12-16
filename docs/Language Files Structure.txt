@@ -47,6 +47,7 @@
           $single_quote_close    : Represent a single closing quote (')
           $shape          : The next word is a shape (circle, triangle etc...)
           $emph           : Gives emphasis to the following letter
+          $underline      : Underlined text
           $accent         : Declares a diacritic to the following letter (See explanation: https://en.wikipedia.org/wiki/English_Braille#Alphabet)
 
                 (For Mathematics:)

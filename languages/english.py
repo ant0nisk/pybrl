@@ -114,6 +114,7 @@ specialCharacters = {
     '%foreign_capital': '000001',
     
     '$emph': '000101',
+    '$underline' : '000111001001',
     '$shape': '110101',
     '$accent': '000100',
     '$dollar': '000100011100',
