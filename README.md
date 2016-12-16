@@ -14,17 +14,18 @@ Unicode characters are fully supported.
 ## How to use?
 The usage of pyUniBraille is super simple:
 
-    In [1]: import pyUniBraille as brl
-    
-    In [2]: brl.translate("Hello World") # Test for English
-    Out[2]: 
-    [[u'000001', u'110010', u'100010', u'111000', u'111000', u'101010'],
-     [u'000001', u'010111', u'101010', u'111010', u'111000', u'100110']]
-    
-    In [3]: brl.translate("Γεία") # Test for Greek
-    Out[3]: [[u'000010', u'110110', u'000010', u'000101', u'100000']]
+```python
+In [1]: import pyUniBraille as brl
 
+In [2]: brl.translate("Hello World")   # Test for English
+Out[2]: 
+[[u'000001', u'110010', u'100010', u'111000', u'111000', u'101010'],
+ [u'000001', u'010111', u'101010', u'111010', u'111000', u'100110']]
 
+In [3]: brl.translate("English with Ελληνικά") # Test with multiple languages
+Out[3]: 
+[[u'000001', u'100010', u'101110', u'110110', u'111000', u'010100', u'100101'], [u'011111'], [u'000010', u'100010', u'111000', u'111000', u'001110', u'101110', u'010100', u'101000', u'000010', u'000101']]
+```
 
 It has automatic language detection, and recognizes different languages as you translate.
 
