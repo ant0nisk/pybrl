@@ -22,9 +22,19 @@ Out[2]:
 [[u'000001', u'110010', u'100010', u'111000', u'111000', u'101010'],
  [u'000001', u'010111', u'101010', u'111010', u'111000', u'100110']]
 
-In [3]: brl.translate("English with Ελληνικά") # Test with multiple languages
-Out[3]: 
-[[u'000001', u'100010', u'101110', u'110110', u'111000', u'010100', u'100101'], [u'011111'], [u'000010', u'100010', u'111000', u'111000', u'001110', u'101110', u'010100', u'101000', u'000010', u'000101']]
+In [3]: example = _
+
+In [4]: brl.translate("English with Ελληνικά") # Test with multiple languages
+Out[4]: 
+[[u'000001', u'100010', u'101110', u'110110', u'111000', u'010100', u'100101'],
+ [u'011111'], [u'000010',  u'100010',  u'111000',  u'111000',  u'001110',  u'101110',  u'010100',  u'101000',  u'000010',  u'000101']]
+
+In [5]: brl.toUnicodeSymbols(example, flatten=True)
+Out[5]: u'\u2820 \u2813 \u2811 \u2807 \u2807 \u2815 \u2820 \u283a \u2815 \u2817 \u2807 \u2819'
+
+In [6]: print _
+⠠ ⠓ ⠑ ⠇ ⠇ ⠕ ⠠ ⠺ ⠕ ⠗ ⠇ ⠙
+
 ```
 
 It has automatic language detection, and recognizes different languages as you translate.
