@@ -4,10 +4,10 @@
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Contribute%20on%20pyUniBraille:%20The%20open-source%20Braille%20translator%20on%20Github!%20https://github.com/ant0nisk/pyUniBraille)
 
 ![Unicode Supported](https://img.shields.io/badge/license-GPL-blue.svg) ![Python: 2.7 Compatible](https://img.shields.io/badge/python-2.7-brightgreen.svg) ![Python: 3.5 Compatible](https://img.shields.io/badge/python-3.5-brightgreen.svg)
-![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg)  ![Project Completion](https://img.shields.io/badge/project_completion-60%-yellow.svg) 
+
+![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg) 
 
 PyUniBraille is an Open-Source Grade-2 Braille Translation system written entirely in Python. It is flexible and any new language can be imported in 10-minutes.
-Unicode characters are fully supported.
 
 ![pyUniBraille Logo](http://inatago.com/Media/unibraille_logo_200.png)
 
@@ -38,7 +38,9 @@ Open the directory of the project in the Terminal and run:
 ## How to import a new Language?
 Each Language file is located under the `languages` directory. It has 3 dictionaries:
 1) `alphabet` contains all the alphabet characters and combinations which have separate shorthand braille symbols *(such as `ar`, `ch`, etc...)*.
+
 2) `contractions` contains complete words which can be abbreviated into simpler combinations of braille cells. For instance, `child` can be represented by the same symbol as `ch` in English.
+
 3) `specialCharacters` contains braille indicators and special symbols such as `@` or `[`. 
 Indicators are built-in with *special variable* representations like `%capital` or `$emph`. 
 There is a difference between the `%` and the `$` variables: The `%` are automatically handled by the translation system *(i.e. if a letter is capital)*, but the `$` cannot because they are usually font-related *(i.e.: italic letters)*.
@@ -50,8 +52,10 @@ For more details please refer to the `docs/Language File Structure.txt` file.
 If the language supports Grade-2 translation, the program supports it. 
 
 Moreover, the output of the translation is a list which has the following format:
+
 `[[u'110000', u'111010', u'111000']]   # This means "braille" in Grade-2 Translation`
-Each sublist represents one Braille cell. The following image shows the corresponding position in the cell:
+
+Each list represents one word, and each string in that sublist is a Braille cell. The following image shows the corresponding position in the cell:
 
 ![Cell Representation](http://inatago.com/Media/cell_repr.png)
 
@@ -64,12 +68,15 @@ See the `docs/TODO.txt` file for an updated list.
 
 ## Contributors Needed
 ##### What is missing?
-- The Nemeth code is not even close to complete. Specifically it needs:
+- The Nemeth code is not even close to complete. Specifically it needs: 
    - Complete the Dictionary with the compatible symbols
    - Complete the Logic that handles the Nemeth code
+
 - A solid way to convert files such as PDFs or Word Documents into a plain format that can be used in the program. Thoughts on how to do this so far:
   1) Convert the Document pages into Images.
+
   2) Use/Integrate tools such as [PDFMiner](https://github.com/euske/pdfminer) to extract text and images *(it is useful that it provides information about the position of the text)*
+
   3) Run OCR to analyze Equations *(probably custom OCR Engine - which I am trying to build)*. There will be exclusive preprocessing of the Equations to first convert it into MathML *(which can already be parsed by pyUniBraille)*.
 
 ##### How to contribute if you are a Developer?
@@ -89,8 +96,10 @@ Such formats include:
    - Word
    - RTF
    - Any "closed" document type
+
 2) Add a new Language File:
   Check out the existing language files (under the `languages` directory) and read the instructions in the **How to import a new Language** part of this README. You will find a sample language file to start in the `docs` directory.
+
 3) Add more Contractions in the Language Files:
   You can edit the language files, and add more contractions in the corresponding dictionary. 
   Right now, only a few are listed, but there are many more that will be added. 
