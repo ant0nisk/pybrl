@@ -37,6 +37,7 @@ Open the directory of the project in the Terminal and run:
 
 ## How to import a new Language?
 Each Language file is located under the `languages` directory. It has 3 dictionaries:
+
 1) `alphabet` contains all the alphabet characters and combinations which have separate shorthand braille symbols *(such as `ar`, `ch`, etc...)*.
 
 2) `contractions` contains complete words which can be abbreviated into simpler combinations of braille cells. For instance, `child` can be represented by the same symbol as `ch` in English.
@@ -63,6 +64,14 @@ If a cell character is a 1, then the corresponding dot in the cell is filled:
 
 ![Cell Representation Example](http://inatago.com/Media/cell_repr_example.png)
 
+Note that in the language files, the following cell representation is valid:
+
+`'000010001110'`
+
+which can be used if a character or symbol uses more than one cell to be represented in Braille *(in this example it uses 2 cells)*. 
+
+The translator will automatically split the cells into segments of 6 characters, so the output of the system is consistent.
+
 ## TODO
 See the `docs/TODO.txt` file for an updated list.
 
@@ -73,6 +82,7 @@ See the `docs/TODO.txt` file for an updated list.
    - Complete the Logic that handles the Nemeth code
 
 - A solid way to convert files such as PDFs or Word Documents into a plain format that can be used in the program. Thoughts on how to do this so far:
+
   1) Convert the Document pages into Images.
 
   2) Use/Integrate tools such as [PDFMiner](https://github.com/euske/pdfminer) to extract text and images *(it is useful that it provides information about the position of the text)*
