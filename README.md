@@ -4,7 +4,7 @@
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Contribute%20on%20pyUniBraille:%20The%20open-source%20Braille%20translator%20on%20Github!%20https://github.com/ant0nisk/pyUniBraille)
 
 ![Unicode Supported](https://img.shields.io/badge/license-GPL-blue.svg) ![Python: 2.7 Compatible](https://img.shields.io/badge/python-2.7-brightgreen.svg) ![Python: 3.5 Compatible](https://img.shields.io/badge/python-3.5-brightgreen.svg)
-![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg)  ![Project Completion](https://img.shields.io/badge/complete-65%25-yellow.svg) 
+![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg)  ![Project Completion](https://img.shields.io/badge/project_completion-60%-yellow.svg) 
 
 PyUniBraille is an Open-Source Grade-2 Braille Translation system written entirely in Python. It is flexible and any new language can be imported in 10-minutes.
 Unicode characters are fully supported.
@@ -15,10 +15,16 @@ Unicode characters are fully supported.
 The usage of pyUniBraille is super simple:
 
     In [1]: import pyUniBraille as brl
-    In [2]: brl.translate("Hello World")
+    
+    In [2]: brl.translate("Hello World") # Test for English
     Out[2]: 
     [[u'000001', u'110010', u'100010', u'111000', u'111000', u'101010'],
      [u'000001', u'010111', u'101010', u'111010', u'111000', u'100110']]
+    
+    In [3]: brl.translate("Γεία") # Test for Greek
+    Out[3]: [[u'000010', u'110110', u'000010', u'000101', u'100000']]
+
+
 
 It has automatic language detection, and recognizes different languages as you translate.
 
