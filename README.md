@@ -1,10 +1,10 @@
 
 # pyUniBraille 
-TODO: GITHUB LINK
-[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](githublink)
+
+[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Contribute%20on%20pyUniBraille:%20The%20open-source%20Braille%20translator%20on%20Github!%20https://github.com/ant0nisk/pyUniBraille)
 
 ![Unicode Supported](https://img.shields.io/badge/license-GPL-blue.svg) ![Python: 2.7 Compatible](https://img.shields.io/badge/python-2.7-brightgreen.svg) ![Python: 3.5 Compatible](https://img.shields.io/badge/python-3.5-brightgreen.svg)
-![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg)  ![Project Completion](https://img.shields.io/badge/project%20completion-60%-yellow.svg) 
+![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg)  ![Project Completion](https://img.shields.io/badge/project_completion-60%-yellow.svg) 
 
 PyUniBraille is an Open-Source Grade-2 Braille Translation system written entirely in Python. It is flexible and any new language can be imported in 10-minutes.
 Unicode characters are fully supported.
@@ -90,8 +90,9 @@ Such formats include:
  Check it out and see how easy it is in the `languages/english.py` file.
 
 ## How this project started?
-A mathematician friend of mine works at a school which is located in a remote village in Crete, Greece. A student of hers is blind. Since the facilities of the school are limited, I was trying to find an affordable Braille printer for him. The programs that the specific school has are really limited. If Greek and Math are combined into one piece of text, the Braille that is printed is unreadable. On top of that, the printer that is available is quite old and thus has a lot of problems. I soon figured out that most machines cost 2000$ or more. I decided to build a printer for him. Having almost no experience with Braille, I researched on how it works and how these printers work. However, I first needed to find a complete translation program, which supports at least English, Greek and Mathematics. Most programs *(either commercial or non-commercial)* that are available right now are either not complete, or expensive *(usually they are both)*. The first days of this project were a reality-check: *We take things for granted and these people are not taken into account for many things in this world.* 
-I don't want to go into detail about the handling of blind students in Greece, but I will only mention that they are completely unable to do the National exams on the last grade of Highschool, because the Ministry of Education in Greece forbids the translation of the exams into Braille. Moreover, the Math books that these students get, have all the exercises omitted, on the justification that "they need to be done under a teacher's supervision". This is just not the way to go.
+A mathematician friend of mine works at a school which is located in a remote village in Crete, Greece. A student of hers is blind. Since the facilities of the school are limited, I was trying to find an affordable Braille printer for him. The programs that the specific school has are really limited. If Greek and Math are combined into one piece of text, the Braille that is printed is unreadable. On top of that, the printer that is available is quite old and thus has a lot of problems. I soon figured out that most machines cost 2000$ or more. I decided to build a printer for him. Having almost no experience with Braille, I researched on how it works and how these printers work. However, I first needed to find a complete translation program, which supports at least English, Greek and Mathematics. Most programs *(either commercial or non-commercial)* that are available right now are either not complete, or expensive *(usually they are both)*. 
+
+The first days of this project were a reality-check: *We take things for granted and these people are not taken into account for many things in this world.* I don't want to go into detail about the handling of blind students in Greece, but I will only mention that they are completely unable to do the National exams on the last grade of Highschool, because the Ministry of Education in Greece forbids the translation of the exams into Braille. Moreover, the Math books that these students get, have all the exercises omitted, on the justification that "they need to be done under a teacher's supervision". This is just not the way to go.
 
 This is just an example why the world needs a complete Braille translation program and affordable Braille printers. 
 
