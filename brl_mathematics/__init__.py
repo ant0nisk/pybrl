@@ -23,10 +23,11 @@
 """
 
 from __future__ import unicode_literals
-import nemeth, universal
-import asciimathml
 import xml.etree.ElementTree
 from collections import defaultdict
+
+import asciimathml
+import nemeth, universal
 
 """
 This is a special module which includes representations for Mathematics and special symbols in Nemeth code.

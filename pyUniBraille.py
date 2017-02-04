@@ -30,8 +30,10 @@ from __future__ import unicode_literals
 import __builtin__
 import os
 import types
+
 import languages
 import brl_mathematics as mathematics
+import utils
 
 use_nemeth_code = True
 
@@ -120,7 +122,6 @@ def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
     """
     if len(importedAlphabets) == 0:
         importLanguageFiles()
-
 
     if mainLanguage == None:
         mainLanguage = importedAlphabets.keys()[0]
@@ -312,7 +313,8 @@ def translate(text, mainLanguage = None):
             cntr += 1
 
             # Capital Letters
-            if (c.isupper() and c in importedAlphabets[usedLanguage] and c not in mathematics.symbols) or contractedTxtTitled:
+            # import pdb;pdb.set_trace() #dbg
+            if (c.isupper() and c in importedAlphabets[usedLanguage]) or contractedTxtTitled: #  and c not in mathematics.symbols
                 prfix = ''
                 contractedTxtTitled = False
                 if enableLanguageIndicator:
