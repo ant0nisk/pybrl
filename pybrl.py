@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    [ pyUniBraille ]
+    [ pybrl ]
     
     Antonis Katzourakis - @ant0nisktz - inatago.com
 

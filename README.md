@@ -1,21 +1,21 @@
 
-# pyUniBraille 
+# pybrl 
 
-[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Contribute%20on%20pyUniBraille:%20The%20open-source%20Braille%20translator%20on%20Github!%20https://github.com/ant0nisk/pyUniBraille)
+[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Contribute%20on%20pybrl:%20The%20open-source%20Braille%20translator%20on%20Github!%20https://github.com/ant0nisk/pybrl)
 
 ![Unicode Supported](https://img.shields.io/badge/license-GPL-blue.svg) ![Python: 2.7 Compatible](https://img.shields.io/badge/python-2.7-brightgreen.svg) ![Python: 3.5 Compatible](https://img.shields.io/badge/python-3.5-brightgreen.svg)
 
 ![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg) 
 
-PyUniBraille is an Open-Source Grade-2 Braille Translation system written entirely in Python. It is flexible and any new language can be imported in 10-minutes.
+pybrl is an Open-Source Grade-2 Braille Translation system written entirely in Python. It is flexible and any new language can be imported in 10-minutes.
 
-![pyUniBraille Logo](http://inatago.com/Media/unibraille_logo_200.png)
+![pybrl Logo](http://inatago.com/Media/pybrl_logo_200.png)
 
 ## How to use?
-The usage of pyUniBraille is super simple:
+The usage of pybrl is super simple:
 
 ```python
-In [1]: import pyUniBraille as brl
+In [1]: import pybrl as brl
 
 In [2]: brl.translate("Hello World")   # Test for English
 Out[2]: 
@@ -97,7 +97,7 @@ See the `docs/TODO.txt` file for an updated list.
 
   2) Use/Integrate tools such as [PDFMiner](https://github.com/euske/pdfminer) to extract text and images *(it is useful that it provides information about the position of the text)*
 
-  3) Run OCR to analyze Equations *(probably custom OCR Engine - which I am trying to build)*. There will be exclusive preprocessing of the Equations to first convert it into MathML *(which can already be parsed by pyUniBraille)*.
+  3) Run OCR to analyze Equations *(probably custom OCR Engine - which I am trying to build)*. There will be exclusive preprocessing of the Equations to first convert it into MathML *(which can already be parsed by pybrl)*.
 
 ##### How to contribute if you are a Developer?
 If you want to contribute in this project, please do so by opening a Pull request.
@@ -141,4 +141,4 @@ I haven't started designing it yet, since the correct translation of documents i
  - Math is not ready yet. There is a lot of work to do there...
 
 ## License
-pyUniBraille is licensed under GNU-GPL. You can find a copy of the license in this repository. [What does that mean?]( http://choosealicense.com/licenses/gpl-3.0/)
+pybrl is licensed under GNU-GPL. You can find a copy of the license in this repository. [What does that mean?]( http://choosealicense.com/licenses/gpl-3.0/)
