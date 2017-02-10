@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    PDF Parsing Utilities for Braille
+    PDF Utilities for Braille
 
     This module uses PDFMiner by Euske - https://github.com/euske/pdfminer
 
@@ -24,6 +24,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 import os
 
 from pdfminer.pdfparser import PDFParser
@@ -36,15 +37,19 @@ from pdfminer.pdfdevice import PDFDevice
 from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator
 
+import pybrl as brl
+
 def parsePDF(filepath, password = None):
-    # Open and parse a PDF File which is located at filepath.
-    # Returns the analysis of each page (with layout)
+    """ 
+    Open and parse a PDF File which is located at filepath.
+    Returns the analysis of each page (with layout)
+    """
     if os.path.isfile(filepath) == False:
         raise Exception("PDF File not found")
 
     fp = open(filepath, 'rb')
     parser = PDFParser(fp)
-    document = PDFDocument(parser, password)
+    document = PDFDocument(parser, password) if password else PDFDocument(parser)
 
     # Check if the document allows text extraction. If not, abort.
     if not document.is_extractable:
@@ -63,34 +68,61 @@ def parsePDF(filepath, password = None):
     return analysis
 
 def extractTextWithLayout(analyzed_data):
-    # Simple extraction of text from each page with basic layout support.
-    # Sample output object:
-    # [
-    #     [   # New Page
-    #         {   # New Text Group
-    #             "text": ["Extracted Text Line 1", "2nd line here"],
-    #             "layout": { # This is the box that bounds the text group
-    #                 'x0': group.x0,
-    #                 'x1': group.x1,
-    #                 'y0': group.y0,
-    #                 'y1': group.y1
-    #             }
-    #         }
-    #     ]
-    # ]    
+    """
+    Simple extraction of text from each page with basic layout support.
+    Sample output object:
+    [
+        [   # New Page
+            {   # New Text Group
+                "text": ["Extracted Text Line 1", "2nd line here"],
+                "layout": { # This is the box that bounds the text group
+                    'x0': group.x0,
+                    'x1': group.x1,
+                    'y0': group.y0,
+                    'y1': group.y1
+                }
+            }
+        ]
+    ]    
+    """
 
     data = []
     for page in analyzed_data:
         if page.groups == None:
             continue
 
-        data.append({})
+        data.append([])
         for group in page.groups:
-            data[-1]['text'] = group.get_text().split("\n")
-            data[-1]['layout'] = {
-                    'x0': group.x0,
-                    'x1': group.x1,
-                    'y0': group.y0,
-                    'y1': group.y1
-                }
+            data[-1].append({
+                    'text': group.get_text().split("\n"),
+                    'layout': {
+                        'x0': group.x0,
+                        'x1': group.x1,
+                        'y0': group.y0,
+                        'y1': group.y1
+                    }
+            })
+
     return data
+
+def translatePDF(filepath, password = None, language = None):
+    """
+    Parse a PDF file from `filepath` using the pdf_parse module.
+    Then translate into Braille and return the result.
+
+    NOTE: The information extraction of the PDF is curretly basic (only text and basic layout information).
+    """
+    analyzed_data = parsePDF(filepath, password)
+    pdf_text = extractTextWithLayout(analyzed_data)
+
+    translated_obj = [] # Same structure as the `pdf_text` variable
+    for page in pdf_text:
+        npage = []
+        for group in page:
+            ngroup = group
+            ngroup['text'] = brl.translate(" ".join(ngroup['text']), language)
+            npage.append(ngroup)
+
+        translated_obj.append(npage)
+
+    return translated_obj

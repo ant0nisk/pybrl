@@ -30,6 +30,8 @@ from __future__ import unicode_literals
 import __builtin__
 import os
 import types
+from inspect import currentframe, getframeinfo
+
 
 import languages
 import brl_mathematics as mathematics
@@ -38,6 +40,8 @@ import utils
 use_nemeth_code = True
 
 __version__ = 0.1
+_Logfile = "_exceptions.log"    # Log file for caught exceptions
+_ErrorVerbosity = True          # Print out info about the caught exceptions
 
 numbers = { # Order is from 0 to 9
 'nemethSystem':
@@ -115,6 +119,24 @@ def _customIndex(l, element, N=0):
         return -1
     
     return len(l)-len(parts[-1])-len(element)
+
+def _logError(error, frame, verbose = None):
+    """
+    Called if an exception occurs. Logs exception to file, if a log file is specified in the _Logfile global.
+    """
+    frameinfo = getframeinfo(frame)
+    filename = frameinfo.filename
+    lineno = frameinfo.lineno
+
+    if verbose is None and _ErrorVerbosity == True:
+        verbose = True
+
+    if verbose:
+        print("Exception in {}<{}>: {}".format(filename, lineno, error))
+
+    if _Logfile != "":
+        with open(_Logfile,'a+') as f:
+            f.write("{}<{}> : {}".format(filename, lineno, error))
 
 def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
     """
@@ -298,22 +320,30 @@ def translate(text, mainLanguage = None):
                     except:
                         try:
                             outWrd.append(importedSpecials[usedLanguage][c])
-                        except:
-                            pass # It is probably a quote like the `was` contraction in English, which becomes a quote.
+                        except Exception as err:
+                            # It is probably a quote like the `was` contraction in English, which becomes a quote.
+                            _logError(err, currentframe())
                 else: # Is a Prefix, Infix or Suffix
-                    if cntr == 0:
-                        outWrd.append(importedAlphabets[usedLanguage][c + "-"]) # Prefix
-                    elif cntr == len(wrd)-1:
-                        outWrd.append(importedAlphabets[usedLanguage]["-" + c]) # Suffix
-                    else:
-                        outWrd.append(importedAlphabets[usedLanguage]["-" + c + "-"]) # Infix
+                    try:
+                        if cntr == 0:
+                            outWrd.append(importedAlphabets[usedLanguage][c + "-"]) # Prefix
+                        elif cntr == len(wrd)-1:
+                            outWrd.append(importedAlphabets[usedLanguage]["-" + c]) # Suffix
+                        else:
+                            outWrd.append(importedAlphabets[usedLanguage]["-" + c + "-"]) # Infix
+                    except Exception as err:
+                        outWrd.extend([importedAlphabets[usedLanguage][i] for i in c])
+                        _logError(err, currentframe())
+
             else:
-                outWrd.append(importedAlphabets[usedLanguage][c])
+                try:
+                    outWrd.append(importedAlphabets[usedLanguage][c])
+                except Exception as err:
+                    _logError(err, currentframe())
 
             cntr += 1
 
             # Capital Letters
-            # import pdb;pdb.set_trace() #dbg
             if (c.isupper() and c in importedAlphabets[usedLanguage]) or contractedTxtTitled: #  and c not in mathematics.symbols
                 prfix = ''
                 contractedTxtTitled = False

@@ -3,3 +3,5 @@ braille-converter-master/
 *.pyc
 misc/
 *.xcworkspace
+pdfminer/
+_exceptions.log

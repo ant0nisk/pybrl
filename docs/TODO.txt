@@ -1,17 +1,20 @@
 TODO:
-(n-7) Implement a Page-matrix which will show the relative position of translated braille. See hypercomplex fraction on the link on (n-6)
+(1) Add more english in the language files (See Bookmarks)
 
-(n-6) Check whether double indicators are needed: http://www.brailleauthority.org/formats/2011manual-web/formats05.html
+(2) Better detection of mathematics in detectLanguage     (If Math is detected, then use the English Characters for language, and the Greek within the Nemeth code - Not from the Language File)
 
-(n-5) support for mixed numbers in Nemeth           (Find out a way... - One might be to have a number just before the fraction, but it isn't always true)
+(3) Implement the Nemeth Code and the Universal math system
 
-(n-4) mathml2variable population                    (Might not be needed. Probably last thing to add.)
+(4) mathml2variable population   (Might not be needed. Probably last thing to do)
 
-(n-3) Implement the Nemeth Code and the Universal math system
+(5) support for mixed numbers in Nemeth           (Find out a way... - One might be to have a number just before the fraction, but it isn't always true)
 
-(n-2) Better detection of mathematics in detectLanguage     (If Math is detected, then use the English Characters for language, and the Greek within the Nemeth code - Not from the Language File)
+(6) Check whether double indicators are needed: http://www.brailleauthority.org/formats/2011manual-web/formats05.html
 
-(n-1) Add more english in the language files (See Bookmarks)
+(7) Implement a Page-matrix which will show the relative position of translated braille. See hypercomplex fraction on the link on TODO(6)
+
+(8) Make the layout of PDFMiner in pdf_utils to be more specific. Now it provides the bounding box of all the text and doesn't split the text in groups.
+
 
 
 NOTES:
