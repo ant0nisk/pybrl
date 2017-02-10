@@ -102,7 +102,7 @@ See the `docs/TODO.txt` file for an updated list.
 ##### How to contribute if you are a Developer?
 If you want to contribute in this project, please do so by opening a Pull request.
 
-If you are **motivated** and want to help me in a more *systematic* way, please send a direct message to me on [Twitter](https://twitter.com/ant0nisktz). In this way, we can both work efficiently on different areas of this project and have a great result more quickly.
+If you are **motivated** and want to help me in a more *systematic* way, please send me an email at antonis.katzourakis (I use gmail). In this way, we can both work efficiently on different areas of this project and have a great result more quickly.
 
 ##### How can you help if you are not a Developer?
 1) Find a resource with the Nemeth code:
