@@ -33,7 +33,7 @@ In [5]: brl.toUnicodeSymbols(example, flatten=True)
 Out[5]: u'\u2820 \u2813 \u2811 \u2807 \u2807 \u2815 \u2820 \u283a \u2815 \u2817 \u2807 \u2819'
 
 In [6]: print _
-⠠ ⠓ ⠑ ⠇ ⠇ ⠕ ⠠ ⠺ ⠕ ⠗ ⠇ ⠙
+⠠⠓⠑⠇⠇⠕ ⠠⠺⠕⠗⠇⠙
 
 ```
 
