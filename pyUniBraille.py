@@ -380,8 +380,14 @@ def toUnicodeSymbols(brl, flatten=False):
             retObj[-1].append(uni_code)
     
     if flatten:
-        flattened_array = [i for j in retObj for i in j]
-        return " ".join(flattened_array)
+        flattened_array = []
+        for j in retObj:
+            for i in j:
+                flattened_array.append(i)
+
+            flattened_array.append(" ") # Include a space between two words
+
+        return "".join(flattened_array)
 
     return retObj
 
@@ -392,7 +398,11 @@ def preprocess(text):
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters, importedSymbols
 
-    words = unicode(text, 'utf-8').split(" ")
+    words = text;
+    if type(words) != unicode:
+        words = unicode(words, 'utf-8')
+
+    words = words.split(" ")
     output = []
     variableInsert = {}
     nw = []
