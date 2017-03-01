@@ -27,8 +27,9 @@
 """
 
 from __future__ import unicode_literals
-import __builtin__
+import builtins
 import os
+import sys
 import types
 from inspect import currentframe, getframeinfo
 
@@ -68,7 +69,17 @@ numbers = { # Order is from 0 to 9
       '010100']
 }
 
-__builtin__.unicode_literals = unicode_literals
+_PYTHON_VERSION = sys.version_info
+builtins._PYTHON_VERSION = _PYTHON_VERSION
+builtins.unicode_literals = unicode_literals
+
+if (_PYTHON_VERSION[0] == 2):   # Solve some compatibility issues between Python 2 and 3.
+    builtins.unicode = unicode
+elif (_PYTHON_VERSION[0] >= 3):
+    builtins.unicode = str
+    builtins.xrange = range
+    if(_PYTHON_VERSION[0] > 3):
+        print("WARNING: Python version isn't 2 or 3. Compatibility code for Python 3 is used...")
 
 importedAlphabets = {}
 importedContractions = {}
@@ -82,9 +93,9 @@ def importLanguageFiles(files=[]):
     Import the specified language files. If no language files are specified, all them will be imported (Skipping only those with the do_not_import variable set to True)
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters
-    
+
     for i in [k for k in dir(languages) if (k in files or k + '.py' in files or files == [])]:
-        if (i.startswith("__") and i.endswith("__")) or i == 'os':
+        if (i.startswith("__") and i.endswith("__")) or i == "builtins" or i == 'os':
             continue
         
         languageModule = eval('languages.{}'.format(i))
@@ -146,7 +157,7 @@ def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
         importLanguageFiles()
 
     if mainLanguage == None:
-        mainLanguage = importedAlphabets.keys()[0]
+        mainLanguage = list(importedAlphabets.keys())[0]
 
     if not wrd:
         return mainLanguage
@@ -183,7 +194,7 @@ def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
 
 def translate(text, mainLanguage = None):
     """
-    Translate a text into Braille representation.
+    Translate text into Braille.
     
     - Replaces all the variables
     - Uses the available rules to keep the context straight
@@ -198,7 +209,7 @@ def translate(text, mainLanguage = None):
     
     usedLanguage = mainLanguage
     if mainLanguage == None:
-        usedLanguage = importedAlphabets.keys()[0]
+        usedLanguage = list(importedAlphabets.keys())[0]
         if 'english' in importedAlphabets.keys():
             usedLanguage = 'english'
 
@@ -384,7 +395,7 @@ def translate(text, mainLanguage = None):
             if len(brl) == 6:
                 normalizedBrl.append(brl)
             else:
-                for i in xrange(len(brl)/6):
+                for i in xrange(len(brl) // 6):
                     normalizedBrl.append(brl[i:i+6])
 
         output.append(normalizedBrl)
@@ -464,7 +475,7 @@ def preprocess(text):
             char = wrd[i]
             if char.isdigit():
                 wList.append(char)
-            elif char in importedSpecials.keys() + _Specials:
+            elif char in list(importedSpecials.keys()) + _Specials:
                 if char not in specialsInsert.keys():
                     specialsInsert[char] = []
                 
@@ -550,3 +561,25 @@ def preprocess(text):
             output.insert(i, [v])
 
     return output
+
+def translatePDF(filepath, password = None, language = None):
+    """
+    Parse a PDF file from `filepath` using the pdf_utils module.
+    Then translate into Braille and return the result.
+
+    NOTE: The information extraction of the PDF is curretly basic (only text and basic layout information).
+    """
+    analyzed_data = utils.pdf_utils.parsePDF(filepath, password)
+    pdf_text = utils.pdf_utils.extractTextWithLayout(analyzed_data)
+
+    translated_obj = [] # Same structure as the `pdf_text` variable
+    for page in pdf_text:
+        npage = []
+        for group in page:
+            ngroup = group
+            ngroup['text'] = translate(" ".join(ngroup['text']), language)
+            npage.append(ngroup)
+
+        translated_obj.append(npage)
+
+    return translated_obj

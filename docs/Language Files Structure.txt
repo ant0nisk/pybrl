@@ -25,7 +25,7 @@
  > Variables in the Formatting:
     - General Info:
         Each variable starts with a dollar sign `$` or a percent sign `%`. That is because there are two types of variables:
-            1) The percent sign variables indicate that the variable is used as a shift-sign. For example, to make a letter capital, it needs the shift indicator '000001' before the letter. This is where the %capital command is used. These are automatically determined by the system.
+            1) The percent sign variables indicate that the variable is used as a shift-sign/indicator. For example, to make a letter capital, it needs the shift indicator '000001' before the letter. This is where the %capital command is used. These are automatically determined by the system.
 
             2) The dollar sign variables indicate a normal variable. For instance, the dollar sign cannot be represented as '$' because it is used already for the variables. This means that we need to use the $dollar variable to represent it. If they are used within the input text, they will be replaced accordingly. (The $dollar, $quote_open and $quote_close are automatically detected.)
 

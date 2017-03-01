@@ -36,8 +36,7 @@ from pdfminer.pdfinterp import PDFPageInterpreter
 from pdfminer.pdfdevice import PDFDevice
 from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator
-
-import pybrl as brl
+from pdfminer.layout import LTTextBox, LTTextLine, LTFigure
 
 def parsePDF(filepath, password = None):
     """ 
@@ -67,14 +66,15 @@ def parsePDF(filepath, password = None):
 
     return analysis
 
-def extractTextWithLayout(analyzed_data):
+def extractTextWithSimpleLayout(analyzed_data):
     """
-    Simple extraction of text from each page with basic layout support.
+    Simple extraction of text from each page with basic layout support (1 group of text per page).
     Sample output object:
     [
         [   # New Page
             {   # New Text Group
                 "text": ["Extracted Text Line 1", "2nd line here"],
+                "type": "text",
                 "layout": { # This is the box that bounds the text group
                     'x0': group.x0,
                     'x1': group.x1,
@@ -105,24 +105,49 @@ def extractTextWithLayout(analyzed_data):
 
     return data
 
-def translatePDF(filepath, password = None, language = None):
+def extractTextWithFullLayout(analyzed_data):
     """
-    Parse a PDF file from `filepath` using the pdf_parse module.
-    Then translate into Braille and return the result.
-
-    NOTE: The information extraction of the PDF is curretly basic (only text and basic layout information).
+    Extraction of text from each page with layout support.
+    Sample output object: (same as extractTextWithSimpleLayout)
+    [
+        [   # New Page
+            {   # New Text Group
+                "text": ["Extracted Text Line 1", "2nd line here"],
+                "type": "text",
+                "layout": { # This is the box that bounds the text group
+                    'x0': group.x0,
+                    'x1': group.x1,
+                    'y0': group.y0,
+                    'y1': group.y1
+                }
+            }
+        ]
+    ]    
     """
-    analyzed_data = parsePDF(filepath, password)
-    pdf_text = extractTextWithLayout(analyzed_data)
 
-    translated_obj = [] # Same structure as the `pdf_text` variable
-    for page in pdf_text:
-        npage = []
-        for group in page:
-            ngroup = group
-            ngroup['text'] = brl.translate(" ".join(ngroup['text']), language)
-            npage.append(ngroup)
+    data = []
+    for page in analyzed_data:
+        if not page:
+            continue
 
-        translated_obj.append(npage)
+        data.append([])
+        for lt_obj in page:
+            if isinstance(lt_obj, LTTextBox) or isinstance(lt_obj, LTTextLine):
+                data[-1].append({
+                        'type': 'text',                         # Might support more types (e.g. figures) in the future.
+                        'text': lt_obj.get_text().split("\n"),
+                        'layout': {
+                            'x0': lt_obj.x0,
+                            'x1': lt_obj.x1,
+                            'y0': lt_obj.y0,
+                            'y1': lt_obj.y1
+                        }
+                    })
 
-    return translated_obj
+    return data
+
+def extractTextWithLayout(analyzed_data):
+    """
+    Helper method to support older API.
+    """
+    return extractTextWithFullLayout(analyzed_data)

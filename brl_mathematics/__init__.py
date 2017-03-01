@@ -27,7 +27,7 @@ import xml.etree.ElementTree
 from collections import defaultdict
 
 import asciimathml
-import nemeth, universal
+from . import nemeth, universal
 
 """
 This is a special module which includes representations for Mathematics and special symbols in Nemeth code.

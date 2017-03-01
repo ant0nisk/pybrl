@@ -13,9 +13,6 @@ TODO:
 
 (7) Implement a Page-matrix which will show the relative position of translated braille. See hypercomplex fraction on the link on TODO(6)
 
-(8) Make the layout of PDFMiner in pdf_utils to be more specific. Now it provides the bounding box of all the text and doesn't split the text in groups.
-
-
 
 NOTES:
 1- Do the conversion of the math variables before the specialCharacter variables
