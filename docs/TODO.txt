@@ -9,9 +9,7 @@ TODO:
 
 (5) support for mixed numbers in Nemeth           (Find out a way... - One might be to have a number just before the fraction, but it isn't always true)
 
-(6) Check whether double indicators are needed: http://www.brailleauthority.org/formats/2011manual-web/formats05.html
-
-(7) Implement a Page-matrix which will show the relative position of translated braille. See hypercomplex fraction on the link on TODO(6)
+(6) Implement a Page-matrix which will show the relative position of translated braille. See hypercomplex fraction on the link on TODO(6)
 
 
 NOTES:

@@ -9,7 +9,7 @@
 
 pybrl is an Open-Source Grade-2 Braille Translation system written entirely in Python. It is flexible and any new language can be imported in 10-minutes.
 
-![pybrl Logo](http://inatago.com/Media/pybrl_logo_200.png)
+[[https://github.com/ant0nisk/pybrl/blob/master/GithubContent/pybrl_logo_200.png|alt=pybrl_logo]]
 
 ## How to use?
 The usage of pybrl is super simple:
@@ -68,11 +68,12 @@ Moreover, the output of the translation is a list which has the following format
 
 Each list represents one word, and each string in that sublist is a Braille cell. The following image shows the corresponding position in the cell:
 
-![Cell Representation](http://inatago.com/Media/cell_repr.png)
+[[https://github.com/ant0nisk/pybrl/blob/master/GithubContent/cell_repr.png|alt=cell_representation]]
 
 If a cell character is a 1, then the corresponding dot in the cell is filled:
 
-![Cell Representation Example](http://inatago.com/Media/cell_repr_example.png)
+	
+[[https://github.com/ant0nisk/pybrl/blob/master/GithubContent/cell_repr_example.png|alt=cell_representation_example]]
 
 Note that in the language files, the following cell representation is valid:
 

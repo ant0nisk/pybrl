@@ -90,7 +90,8 @@ _Specials = [u'“',u'”',u'$',u'"',u'\'',u'»',u'«', '$dollar', '$quote_open'
 
 def importLanguageFiles(files=[]):
     """ 
-    Import the specified language files. If no language files are specified, all them will be imported (Skipping only those with the do_not_import variable set to True)
+    Import the specified language files. 
+    If no language files are specified, all them will be imported (Skipping only those with the do_not_import variable set to True)
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters
 
@@ -149,7 +150,7 @@ def _logError(error, frame, verbose = None):
         with open(_Logfile,'a+') as f:
             f.write("{}<{}> : {}".format(filename, lineno, error))
 
-def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
+def detectLanguage(wrd, mainLanguage = None, avoidMath = False):
     """
     Detect which of the imported Alphabets to use
     """
@@ -171,7 +172,7 @@ def detectLanguage(wrd, mainLanguage = None,avoidMath = False):
         hits = 0
         mathHits = 0
         for c in wrd:
-            if c.isdigit():
+            if c.isdigit():     # Not a good way to detect mathematical expressions
                 mathHits += 1
         
             if c in importedAlphabets[a].keys():
@@ -197,7 +198,7 @@ def translate(text, mainLanguage = None):
     Translate text into Braille.
     
     - Replaces all the variables
-    - Uses the available rules to keep the context straight
+    - Uses the available rules to keep the context clear
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters, importedSymbols
 
@@ -273,13 +274,13 @@ def translate(text, mainLanguage = None):
                 
                 if not isContraction:
                     continue
-            elif c.startswith('$'):
+            elif c.startswith('$'): # Handle variables
                 if c in importedSpecials[usedLanguage].keys():
                     outWrd.append(importedSpecials[usedLanguage][c])
                 
                 if not isContraction:
                     continue
-            elif c == '"' or c == '\'':
+            elif c == '"' or c == '\'': # Handle quotes
                 if '$single_quote_close' not in importedSpecials[usedLanguage].keys() or '$single_quote_open' not in importedSpecials[usedLanguage].keys():
                     c = '"'
 
@@ -318,7 +319,7 @@ def translate(text, mainLanguage = None):
             if not c: # Skip empty characters
                 continue
             
-            if enableLanguageIndicator:
+            if enableLanguageIndicator: # Handle foreign languages
                 if foreignStreak == 0:
                     foreignStreak = 1
                     if "%foreign_indicator" in importedSpecials[usedLanguage].keys():
@@ -567,7 +568,7 @@ def translatePDF(filepath, password = None, language = None):
     Parse a PDF file from `filepath` using the pdf_utils module.
     Then translate into Braille and return the result.
 
-    NOTE: The information extraction of the PDF is curretly basic (only text and basic layout information).
+    NOTE: The information extraction of the PDF is currently basic (only text and basic layout information).
     """
     analyzed_data = utils.pdf_utils.parsePDF(filepath, password)
     pdf_text = utils.pdf_utils.extractTextWithLayout(analyzed_data)

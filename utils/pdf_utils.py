@@ -37,6 +37,9 @@ from pdfminer.pdfdevice import PDFDevice
 from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import LTTextBox, LTTextLine, LTFigure
+from pdfminer import settings as MinerSettings
+
+MinerSettings.STRICT = False;                   # Resolves some PSTypeError exceptions which occur sometimes
 
 def parsePDF(filepath, password = None):
     """ 
