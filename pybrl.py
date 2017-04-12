@@ -33,6 +33,9 @@ import sys
 import types
 from inspect import currentframe, getframeinfo
 
+import six
+from six import unichr, iteritems, u
+from six.moves import range
 
 import languages
 import brl_mathematics as mathematics
@@ -72,14 +75,15 @@ numbers = { # Order is from 0 to 9
 _PYTHON_VERSION = sys.version_info
 builtins._PYTHON_VERSION = _PYTHON_VERSION
 builtins.unicode_literals = unicode_literals
+builtins.u = u
+builtins.iteritems = iteritems
+builtins.unichr = unichr
+builtins.range = range  
+builtins.xrange = range
 
-if (_PYTHON_VERSION[0] == 2):   # Solve some compatibility issues between Python 2 and 3.
-    builtins.unicode = unicode
-elif (_PYTHON_VERSION[0] >= 3):
-    builtins.unicode = str
-    builtins.xrange = range
-    if(_PYTHON_VERSION[0] > 3):
-        print("WARNING: Python version isn't 2 or 3. Compatibility code for Python 3 is used...")
+# Python 2 and 3 compatibility
+xrange = range
+unicode = six.text_type
 
 importedAlphabets = {}
 importedContractions = {}
@@ -442,7 +446,7 @@ def preprocess(text):
 
     words = text;
     if type(words) != unicode:
-        words = unicode(words, 'utf-8')
+        words = u(words, 'utf-8')
 
     words = words.split(" ")
     output = []
