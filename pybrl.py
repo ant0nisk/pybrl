@@ -4,7 +4,7 @@
 """
     [ pybrl ]
     
-    Antonis Katzourakis - @ant0nisktz - inatago.com
+    Antonis Katzourakis - @ant0nisktz - antonis.cc
 
 
     LICENSE:
@@ -154,23 +154,23 @@ def _logError(error, frame, verbose = None):
         with open(_Logfile,'a+') as f:
             f.write("{}<{}> : {}".format(filename, lineno, error))
 
-def detectLanguage(wrd, mainLanguage = None, avoidMath = False):
+def detectLanguage(wrd, main_language = None, avoidMath = False):
     """
     Detect which of the imported Alphabets to use
     """
     if len(importedAlphabets) == 0:
         importLanguageFiles()
 
-    if mainLanguage == None:
-        mainLanguage = list(importedAlphabets.keys())[0]
+    if main_language == None:
+        main_language = list(importedAlphabets.keys())[0]
 
     if not wrd:
-        return mainLanguage
+        return main_language
     
     bestHitRate = -1
-    targetAlphabet = mainLanguage
+    targetAlphabet = main_language
     mathHits = 0
-    mainLanguageHits = 0
+    main_languageHits = 0
 
     for a in importedAlphabets.keys():
         hits = 0
@@ -181,8 +181,8 @@ def detectLanguage(wrd, mainLanguage = None, avoidMath = False):
         
             if c in importedAlphabets[a].keys():
                 hits += 1
-                if a == mainLanguage:
-                    mainLanguageHits += 1
+                if a == main_language:
+                    main_languageHits += 1
 
         if hits > bestHitRate:
             bestHitRate = hits
@@ -192,12 +192,12 @@ def detectLanguage(wrd, mainLanguage = None, avoidMath = False):
 #        targetAlphabet = 'mathematics'
 #    elif avoidMath:
 #         if mathHits > bestHitRate * 1.5: targetAlphabet = 'mathematics'
-    if mainLanguageHits == bestHitRate:
-        targetAlphabet = mainLanguage
+    if main_languageHits == bestHitRate:
+        targetAlphabet = main_language
 
     return targetAlphabet
 
-def translate(text, mainLanguage = None):
+def translate(text, main_language = None):
     """
     Translate text into Braille.
     
@@ -212,13 +212,13 @@ def translate(text, mainLanguage = None):
     if len(importedAlphabets.keys()) == 0:
         raise Exception("No Language files are imported.")
     
-    usedLanguage = mainLanguage
-    if mainLanguage == None:
+    usedLanguage = main_language
+    if main_language == None:
         usedLanguage = list(importedAlphabets.keys())[0]
         if 'english' in importedAlphabets.keys():
             usedLanguage = 'english'
 
-        mainLanguage = usedLanguage
+        main_language = usedLanguage
 
     output = []
     singleQuoteOpened = False
@@ -226,10 +226,10 @@ def translate(text, mainLanguage = None):
 
     previousLanguage = usedLanguage
     for wrd in text:
-        usedLanguage = detectLanguage(wrd, mainLanguage = mainLanguage)
+        usedLanguage = detectLanguage(wrd, main_language = main_language)
         enableLanguageIndicator = False
 
-        if usedLanguage != mainLanguage:
+        if usedLanguage != main_language:
             enableLanguageIndicator = True
             previousLanguage = usedLanguage
 
@@ -327,7 +327,7 @@ def translate(text, mainLanguage = None):
                 if foreignStreak == 0:
                     foreignStreak = 1
                     if "%foreign_indicator" in importedSpecials[usedLanguage].keys():
-                        outWrd.append(importedSpecials[mainLanguage]['%foreign_indicator'])
+                        outWrd.append(importedSpecials[main_language]['%foreign_indicator'])
         
             if len(c) > 1 or isContraction:
                 if c in importedAlphabets[usedLanguage].keys() or isContraction:
@@ -348,9 +348,13 @@ def translate(text, mainLanguage = None):
                         else:
                             outWrd.append(importedAlphabets[usedLanguage]["-" + c + "-"]) # Infix
                     except Exception as err:
-                        outWrd.extend([importedAlphabets[usedLanguage][i] for i in c])
-                        _logError(err, currentframe())
-
+                        try:
+                            outWrd.extend([importedAlphabets[usedLanguage][i] for i in c])
+                            _logError(err, currentframe())
+                        except Exception as err2:
+                            total_err = "An exception occured while handling exception `{}`. \nError message: {}".format(err, err2)
+                            _logError(total_err, currentframe())
+                            continue
             else:
                 try:
                     outWrd.append(importedAlphabets[usedLanguage][c])
@@ -368,8 +372,8 @@ def translate(text, mainLanguage = None):
                 
                 if foreignCapitalStreak and enableLanguageIndicator == False: # Foreign Capital streak ended. Start a new without foreign Characters
                     if capitalsStreak == 2:
-                        outWrd.insert(len(outWrd) - 1, importedSpecials[mainLanguage]['%foreign_capital'])
-                        outWrd.insert(len(outWrd) - 1, importedSpecials[mainLanguage]['%foreign_capital'])
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[main_language]['%foreign_capital'])
+                        outWrd.insert(len(outWrd) - 1, importedSpecials[main_language]['%foreign_capital'])
 
                     capitalsStreak = 0
                 
@@ -446,7 +450,7 @@ def preprocess(text):
 
     words = text;
     if type(words) != unicode:
-        words = u(words, 'utf-8')
+        words = u(words)
 
     words = words.split(" ")
     output = []

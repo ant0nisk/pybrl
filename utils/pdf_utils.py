@@ -27,6 +27,8 @@
 
 import os
 
+import six
+
 from pdfminer.pdfparser import PDFParser
 from pdfminer.pdfdocument import PDFDocument
 from pdfminer.pdfpage import PDFPage
@@ -37,9 +39,10 @@ from pdfminer.pdfdevice import PDFDevice
 from pdfminer.layout import LAParams
 from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import LTTextBox, LTTextLine, LTFigure
-from pdfminer import settings as MinerSettings
 
-MinerSettings.STRICT = False;                   # Resolves some PSTypeError exceptions which occur sometimes
+if six.PY3:
+    from pdfminer import settings as MinerSettings
+    MinerSettings.STRICT = False;     # Resolves some PSTypeError exceptions which occur sometimes
 
 def parsePDF(filepath, password = None):
     """ 

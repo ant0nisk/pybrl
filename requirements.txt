@@ -1,4 +1,4 @@
-# pyUniBraille Requirements
+# pybrl Requirements
 asciimathml==0.9.5.1
 pdfminer==20140328
 six

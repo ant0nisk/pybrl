@@ -23,7 +23,7 @@
 """
 
 from __future__ import unicode_literals
-import xml.etree.ElementTree
+import xml.etree.ElementTree as ET
 from collections import defaultdict
 
 import asciimathml
@@ -33,7 +33,7 @@ from . import nemeth, universal
 This is a special module which includes representations for Mathematics and special symbols in Nemeth code.
 
 This will be used if the use_nemeth_code is set to True, and only if Math input is detected. Otherwise, the `brl_mathematics.universal` module will be used.
- """
+"""
 
 symbols= {}
 
@@ -81,8 +81,7 @@ def mathToBraille(s):
     """
     Translate a Math expression in a string to Braille.
     """
-    if type(s) != unicode:
-        s = unicode(s, 'utf-8')
+    s = u(s)
     
     if not s:
         return ''
@@ -99,8 +98,11 @@ def _mathToBrailleHelper(math_list, sqrt_shift=0):
 
     for e in math_list:
         e_type = e[0]
-        e_val = e[1]
-        
+        try:
+            e_val = e[1]
+        except:
+            continue
+            
         if e_type == 'mi':                  # Identifiers
             output_list.append(e_val)
         elif e_type == 'mo':                # Operators
@@ -139,7 +141,7 @@ def makeMathList(s):
     """
     Create a structured Dict that can be iterated in such a way, that a structured Braille output can be generated.
     """
-    m = parseMathToML(s)
+    m = parseMathToML(s)      # Uses asciimathml and will be deprecated.
     return xmlToList(m)[1][0][1]
 
 def parseMathToML(s):
@@ -178,20 +180,36 @@ def detectFractionComplexity(branch_list):
             if len(branch_list[m+1]) == 1 and type(branch_list[m+1][0]) == list and branch_list[m+1][0][0] == 'mfrac':
                 complexity += 1
 
-    if complexity > 2: # Never occurs, but let's be sure
+    if complexity > 2:
         return 2
 
     return complexity
 
 # [Helper functions and classes below]
-def flattenList(S): # Convert a multi-dimensional list, into 1-dimensional
+def flattenList(S):
+    """
+    Convert a multi-dimensional list, into 1-dimensional
+    """
     if S == []:
         return S
     if isinstance(S[0], list):
         return flattenList(S[0]) + flattenList(S[1:])
     return S[:1] + flattenList(S[1:])
 
-def xmlToList(element): # Convert XML to nested List
+def loadXML(xml_string, normalize = True):
+    """
+    Load XML from string
+    """
+    if normalize:
+        xml_string = xml_string.replace("\n","  ").replace("  ","")
+    
+    parser = ET.XMLParser(encoding = 'utf-8')
+    return ET.fromstring(xml_string, parser = parser)
+
+def xmlToList(element):
+    """
+    Convert XML to nested List
+    """
     node = [element.tag]
     text = getattr(element, 'text', None)
     if text is not None:

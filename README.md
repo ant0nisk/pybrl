@@ -145,5 +145,12 @@ I haven't started designing it yet, since the correct translation of documents i
  - The Language detection works great, but it can fail on similar languages (i.e. German and Dutch). However, such languages usually share the same Braille alphabet, so there is really low chance of failure. **Remember** to check if the translated text is correct though - I hadn't any occurrencies of bad translations, but I cannot guarantee that.
  - Math is not ready yet. There is a lot of work to do there...
 
+## Unit tests
+In the `tests` directory, I include unit tests for different functionalities of pybrl. You can run them individually or all of them by:
+
+```bash
+python test_all.py
+```
+
 ## License
 pybrl is licensed under GNU-GPL. You can find a copy of the license in this repository. [What does that mean?]( http://choosealicense.com/licenses/gpl-3.0/)
