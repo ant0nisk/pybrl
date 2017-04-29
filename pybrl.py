@@ -418,6 +418,7 @@ def toUnicodeSymbols(brl, flatten=False):
      Otherwise, a string is returned with the translated Braille in Unicode.
     """
     retObj=[]
+    
     for wrd in brl:
         retObj.append([])
         for ch in wrd:
@@ -438,6 +439,33 @@ def toUnicodeSymbols(brl, flatten=False):
             flattened_array.append(" ") # Include a space between two words
 
         return "".join(flattened_array)
+
+    return retObj
+
+def fromUnicodeSymbols(s):
+    """
+    Convert a braille string (with unicode symbols) to the representation used
+    in this program. Used for debugging and as a tool to integrate the Nemeth code.
+    """
+    s_ = s.split(" ")
+    retObj = []
+
+    for wrd in s_:
+        word_repr = []
+        for ch in wrd:
+            hex_val = hex(ord(ch)).replace("0x", "")
+            while(len(hex_val) < 4):
+                hex_val = "0" + hex_val
+
+            hex_val = hex_val[2:]
+
+            raise_dot = "{0:b}".format(int(hex_val, 16))[::-1]
+            while len(raise_dot) < 6:
+                raise_dot += "0"
+
+            word_repr.append(raise_dot)
+        
+        retObj.append(word_repr)
 
     return retObj
 

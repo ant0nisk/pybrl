@@ -75,7 +75,7 @@ Each list represents one word, and each string in that sublist is a Braille cell
 
 If a cell character is a 1, then the corresponding dot in the cell is filled:
 
-	
+  
 ![cell representation example](https://raw.github.com/ant0nisk/pybrl/master/GithubContent/cell_repr_example.png)
 
 
@@ -92,9 +92,9 @@ See the `docs/TODO.txt` file for an updated list.
 
 ## Contributors Needed
 ##### What is missing?
-- The Nemeth code is not even close to complete. Specifically it needs: 
-   - Complete the Dictionary with the compatible symbols
-   - Complete the Logic that handles the Nemeth code
+- The Nemeth code is not integrated yet. Specifically it needs: 
+   - Convert the keys in `nemeth.dict` file to be used within pybrl.
+   - Complete the Logic that handles the Nemeth code translation
 
 - A solid way to convert files such as PDFs or Word Documents into a plain format that can be used in the program. Thoughts on how to do this so far:
 
@@ -102,33 +102,22 @@ See the `docs/TODO.txt` file for an updated list.
 
   2) Use/Integrate tools such as [PDFMiner](https://github.com/euske/pdfminer) to extract text and images *(it is useful that it provides information about the position of the text)*
 
-  3) Run OCR to analyze Equations *(probably custom OCR Engine - which I am trying to build)*. There will be exclusive preprocessing of the Equations to first convert it into MathML *(which can already be parsed by pybrl)*.
+  3) Use an OCR-based method to analyze Equations. There will be exclusive preprocessing of the Equations to first convert it into MathML *(which can already be parsed by pybrl)*.
 
 ##### How to contribute if you are a Developer?
 If you want to contribute in this project, please do so by opening a Pull request.
 
-If you are **motivated** and want to help me in a more *systematic* way, please send me an email at antonis.katzourakis (I use gmail). In this way, we can both work efficiently on different areas of this project and have a great result more quickly.
+If you are motivated and want to help developing this project, please send me an email at antonis.katzourakis (I use gmail). 
 
 ##### How can you help if you are not a Developer?
-1) Find a resource with the Nemeth code:
-  If you have access to a file or resource that can provide the complete Nemeth code, in a format that is easy to integrate into the project, this would be **major** help.
-Such formats include:
-   - Excel file or CSV
-   - HTML with a Grid-like format *(such as a table)*
-
-   Formats that we **cannot** easily work with:
-   - PDF
-   - Word
-   - RTF
-   - Any "closed" document type
-
-2) Add a new Language File:
+1) Add a new Language File:
   Check out the existing language files (under the `languages` directory) and read the instructions in the **How to import a new Language** part of this README. You will find a sample language file to start in the `docs` directory.
 
-3) Add more Contractions in the Language Files:
+2) Add more Contractions in the Language Files:
   You can edit the language files, and add more contractions in the corresponding dictionary. 
   Right now, only a few are listed, but there are many more that will be added. 
  Check it out and see how easy it is in the `languages/english.py` file.
+
 
 ## How this project started?
 A mathematician friend of mine works at a school which is located in a remote village in Crete, Greece. A student of hers is blind. Since the facilities of the school are limited, I was trying to find an affordable Braille printer for him. The programs that the specific school has are really limited. If Greek and Math are combined into one piece of text, the Braille that is printed is unreadable. On top of that, the printer that is available is quite old and thus has a lot of problems. I soon figured out that most machines cost 2000$ or more. I decided to build a printer for him. Having almost no experience with Braille, I researched on how it works and how these printers work. However, I first needed to find a complete translation program, which supports at least English, Greek and Mathematics. Most programs *(either commercial or non-commercial)* that are available right now are either not complete, or expensive *(usually they are both)*. 
@@ -144,6 +133,13 @@ I haven't started designing it yet, since the correct translation of documents i
 ## Notes: 
  - The Language detection works great, but it can fail on similar languages (i.e. German and Dutch). However, such languages usually share the same Braille alphabet, so there is really low chance of failure. **Remember** to check if the translated text is correct though - I hadn't any occurrencies of bad translations, but I cannot guarantee that.
  - Math is not ready yet. There is a lot of work to do there...
+
+## See also:
+In the `docs/nemeth_integration` directory are 2 files with the nemeth code (a JSON file from [latex2nemeth](https://sourceforge.net/projects/latex2nemeth/) and a semi-processed python dictionary) and a Jupyter notebook.
+
+I think the [notebook](docs/nemeth_integration/README.ipynb) is a great way to understand how the data is formatted in pybrl, and how to parse big files in order to convert them in the raise-dot format.
+
+Also, check out the latex2nemeth project, which can translate LaTeX files into Braille.
 
 ## Unit tests
 In the `tests` directory, I include unit tests for different functionalities of pybrl. You can run them individually or all of them by:
