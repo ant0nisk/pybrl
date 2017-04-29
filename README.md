@@ -137,7 +137,7 @@ I haven't started designing it yet, since the correct translation of documents i
 ## See also:
 In the `docs/nemeth_integration` directory are 2 files with the nemeth code (a JSON file from [latex2nemeth](https://sourceforge.net/projects/latex2nemeth/) and a semi-processed python dictionary) and a Jupyter notebook.
 
-I think the [notebook](docs/nemeth_integration/README.ipynb) is a great way to understand how the data is formatted in pybrl, and how to parse big files in order to convert them in the raise-dot format.
+I think the [notebook](docs/nemeth_integration/Notebook.ipynb) is a great way to understand how the data is formatted in pybrl, and how to parse big files in order to convert them in the raise-dot format.
 
 Also, check out the latex2nemeth project, which can translate LaTeX files into Braille.
 
