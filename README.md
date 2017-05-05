@@ -87,6 +87,12 @@ which can be used if a character or symbol uses more than one cell to be represe
 
 The translator will automatically split the cells into segments of 6 characters, so the output of the system is consistent.
 
+## Jupyter Notebooks for example usage:
+In the `docs/Samples` directory, I have some Jupyter Notebooks with example usage of `pybrl`. Going through them is a great way to learn the tool and how it works.
+
+* [Translate PDF files and create new ones using `pybrl` and LaTeX](docs/Samples/pdf_translation/Notebook.ipynb)
+* [Learn how data is formated within `pybrl`](docs/Samples/nemeth_integration/Notebook.ipynb)
+
 ## TODO
 See the `docs/TODO.txt` file for an updated list.
 
@@ -133,12 +139,6 @@ I haven't started designing it yet, since the correct translation of documents i
 ## Notes: 
  - The Language detection works great, but it can fail on similar languages (i.e. German and Dutch). However, such languages usually share the same Braille alphabet, so there is really low chance of failure. **Remember** to check if the translated text is correct though - I hadn't any occurrencies of bad translations, but I cannot guarantee that.
  - Math is not ready yet. There is a lot of work to do there...
-
-## Jupyter Notebooks for example usage:
-In the `docs/Samples` directory, I have some Jupyter Notebooks with example usage of `pybrl`. Going through them is a great way to learn the tool and how it works.
-
-* [Translate PDF files and create new ones using `pybrl` and LaTeX](pdf_translation/Notebook.ipynb)
-* [Learn how data is formated within `pybrl`](nemeth_integration/Notebook.ipynb)
 
 ## Unit tests
 In the `tests` directory, I include unit tests for different functionalities of pybrl. You can run them individually or all of them by:
