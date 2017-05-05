@@ -134,12 +134,11 @@ I haven't started designing it yet, since the correct translation of documents i
  - The Language detection works great, but it can fail on similar languages (i.e. German and Dutch). However, such languages usually share the same Braille alphabet, so there is really low chance of failure. **Remember** to check if the translated text is correct though - I hadn't any occurrencies of bad translations, but I cannot guarantee that.
  - Math is not ready yet. There is a lot of work to do there...
 
-## See also:
-In the `docs/nemeth_integration` directory are 2 files with the nemeth code (a JSON file from [latex2nemeth](https://sourceforge.net/projects/latex2nemeth/) and a semi-processed python dictionary) and a Jupyter notebook.
+## Jupyter Notebooks for example usage:
+In the `docs/Samples` directory, I have some Jupyter Notebooks with example usage of `pybrl`. Going through them is a great way to learn the tool and how it works.
 
-I think the [notebook](docs/nemeth_integration/Notebook.ipynb) is a great way to understand how the data is formatted in pybrl, and how to parse big files in order to convert them in the raise-dot format.
-
-Also, check out the latex2nemeth project, which can translate LaTeX files into Braille.
+* [Translate PDF files and create new ones using `pybrl` and LaTeX](pdf_translation/Notebook.ipynb)
+* [Learn how data is formated within `pybrl`](nemeth_integration/Notebook.ipynb)
 
 ## Unit tests
 In the `tests` directory, I include unit tests for different functionalities of pybrl. You can run them individually or all of them by:

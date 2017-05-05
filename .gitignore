@@ -5,3 +5,4 @@ misc/
 pdfminer/
 _exceptions.log
 __pycache__
+.ipynb_checkpoints
