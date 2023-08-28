@@ -46,10 +46,11 @@ dependencies = [
 
 [tool.setuptools]
 packages = [
-  "pybrl",
+  "utils",
   "languages",
   "brl_mathematics"
 ]
+py-modules = ["pybrl"]
 
 [project.optional-dependencies]
 pdf = ["pdfminer==20140328"]
