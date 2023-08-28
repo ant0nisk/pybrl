@@ -46,6 +46,7 @@ dependencies = [
 
 [tool.setuptools]
 packages = [
+  "pybrl",
   "languages",
   "brl_mathematics"
 ]
