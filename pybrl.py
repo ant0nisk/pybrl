@@ -476,7 +476,7 @@ def preprocess(text):
     """
     global importedAlphabets, importedContractions, importedSpecials, _orderedSplitters, importedSymbols
 
-    words = text;
+    words = text
     if type(words) != unicode:
         words = u(words)
 

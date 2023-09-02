@@ -38,7 +38,7 @@
 import unittest
 import sys
 import os
-sys.path.insert(0, os.path.abspath('..'))
+# sys.path.insert(0, os.path.abspath('..'))
 
 from six import u
 import pybrl as brl
@@ -81,6 +81,25 @@ class TranslationTests(unittest.TestCase):
         output = brl.translate(sentence, main_language = "greek")
         actual_output = [['000101', '001110'], ['101000', '000010', '000101', '111010', '010100', '100000'], ['110110', '111000', '000010', '000100', '011100', '011100', '100000'], ['000010', '000101', '101110', '110001'], ['011110', '100000'], ['000101', '100010', '111000', '111000', '001110', '101110', '010100', '101000', '000010', '000101'], ['000101', '000101', '100000', '110110', '110110', '111000', '010100', '101000', '000010', '000101'], ['000011', '000001', '110100', '101010', '101010'], ['000011', '110000', '001110'], ['001111', '010001', '001010', '010010', '010000', '001011']]
         # ⠨⠜ ⠅⠐⠨⠗⠊⠁ ⠛⠇⠐⠈⠎⠎⠁ ⠐⠨⠝⠣ ⠞⠁ ⠨⠑⠇⠇⠜⠝⠊⠅⠐⠨ ⠨⠨⠁⠛⠛⠇⠊⠅⠐⠨ ⠰⠠⠋⠕⠕ ⠰⠃⠜ ⠼⠢⠔⠒⠂⠴ 
+        self.assertEqual(output, actual_output)
+
+    def test_single_cell_word_contractions(self):
+        # Test the word but, which should reduce to 'b'
+        word = u"but"
+        output = brl.translate(word, main_language = "english")
+        actual_output = [['110000']]
+        self.assertEqual(output, actual_output)
+
+        # Test the word rather, which should reduce to 'r'
+        word = u"rather"
+        output = brl.translate(word, main_language = "english")
+        actual_output = [['111010']]
+        self.assertEqual(output, actual_output)
+
+        # Test the word knowledge, which should reduce to 'k'
+        word = u"knowledge"
+        output = brl.translate(word, main_language = "english")
+        actual_output = [['101000']]
         self.assertEqual(output, actual_output)
 
 if __name__ == '__main__':
