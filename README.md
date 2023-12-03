@@ -3,7 +3,7 @@
 
 [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Contribute%20on%20pybrl:%20The%20open-source%20Braille%20translator%20on%20Github!%20https://github.com/ant0nisk/pybrl)
 
-![Unicode Supported](https://img.shields.io/badge/license-GPL-blue.svg) ![Python: 2.7 Compatible](https://img.shields.io/badge/python-2.7-brightgreen.svg) ![Python: 3.5 Compatible](https://img.shields.io/badge/python-3.5-brightgreen.svg)
+![Unicode Supported](https://img.shields.io/badge/license-GPL-blue.svg) ![Python: 3.5 Compatible](https://img.shields.io/badge/python-3.5-brightgreen.svg) ![Python: 3.9 Compatible](https://img.shields.io/badge/python-3.9-brightgreen.svg)
 
 ![Unicode Supported](https://img.shields.io/badge/unicode-supported-blue.svg) 
 
