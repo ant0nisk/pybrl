@@ -572,26 +572,36 @@ def preprocess(text):
                 output.append([wrd])
                 continue
 
-        orderedSplitWord = {}
-        foundLetters = []
-        wList = sorted(wList, key=len)
+        output_word = [None]*len(wrd)
+        wList = sorted(wList, key=len, reverse=True)
         for cmb in wList:
-            foundCmbs.append(cmb)
-            kk = str(_customIndex(wrd, cmb, foundCmbs.count(cmb)-1))
-            rst = 1
-            while kk in orderedSplitWord.keys():
-                kk = str(float(kk) - rst + 0.001) # Fix the ordering in some (extremely) rare cases
-                rst = 0
+            _start = 0
+            idx = _customIndex(wrd, cmb, _start)
 
-            orderedSplitWord[kk] = cmb
+            while output_word[idx] is not None:
+                _start += 1
+                idx = _customIndex(wrd, cmb, _start)
 
-        outputWord = [orderedSplitWord[i] for i in sorted(orderedSplitWord.keys(), key=lambda x: float(x))]
+                if ((idx + len(cmb)) > len(output_word)):
+                    raise RuntimeError("Unexpected error while reconstructing the word:", wrd)
+
+            output_word[idx] = cmb
+
+        while None in output_word:
+            # Not the best way, but the previous processor would skip
+            # some characters which are fixed later (e.g. commas).
+            # The new processor would leave None elements which are
+            # an invalid type here.
+            # Contracted symbols (such as `ow`` or `gh`)
+            # will also leave None elements.
+            output_word.remove(None)
+
         for s in specialsInsert.keys():
             for i in specialsInsert[s]:
-                outputWord.insert(i, s)
+                output_word.insert(i, s)
 
-        if outputWord != []:
-            output.append(outputWord)
+        if output_word != []:
+            output.append(output_word)
 
     for v in variableInsert.keys():
         for i in variableInsert[v]:
