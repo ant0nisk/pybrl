@@ -28,9 +28,7 @@
 
 from __future__ import unicode_literals
 import builtins
-import os
 import sys
-import types
 from inspect import currentframe, getframeinfo
 
 import six

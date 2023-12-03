@@ -41,8 +41,12 @@ from pdfminer.converter import PDFPageAggregator
 from pdfminer.layout import LTTextBox, LTTextLine, LTFigure
 
 if six.PY3:
-    from pdfminer import settings as MinerSettings
-    MinerSettings.STRICT = False;     # Resolves some PSTypeError exceptions which occur sometimes
+    try:
+        from pdfminer import settings as MinerSettings
+        MinerSettings.STRICT = False;     # Resolves some PSTypeError exceptions which occur sometimes
+    except:
+        # Not a critical-error; new versions of PDF miner do not require this
+        pass
 
 def parsePDF(filepath, password = None):
     """ 
